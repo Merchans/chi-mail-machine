@@ -1,1 +1,1 @@
-# chi-mail-machine
+# CHI Mail Machine
