@@ -236,6 +236,8 @@
 
 			$this->loader->add_filter( 'single_template', $plugin_post_type, 'single_template_email');
 
+			$this->loader->add_filter( 'archive_template', $plugin_post_type, 'archive_template_email');
+
 			$this->loader->add_filter( 'post_type_link', $plugin_post_type, 'single_filter_post_type_link', 3, 2);
 
 

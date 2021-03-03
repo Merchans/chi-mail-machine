@@ -49,6 +49,8 @@
 		 * @access   protected
 		 * @var      string $version The current version of the plugin.
 		 */
+		protected $template_loader;
+
 		protected $version;
 
 		/**
@@ -64,6 +66,8 @@
 
 			$this->plugin_name = $plugin_name;
 			$this->$version    = $version;
+
+//			$this->template_loader = $this->get_template_loader();
 
 		}
 
@@ -118,7 +122,7 @@
 				'rewrite'            => array( 'slug' => 'email/%category%' ),
 				'capability_type'    => 'post',
 				'has_archive'        => 'email',
-				'show_in_rest' => true,
+				'show_in_rest'       => true,
 				'menu_position'      => 2,
 				'menu_icon'          => CHI_MAIL_BASE_URL . '/logo.svg',
 				'supports'           => array( 'title', 'editor', 'revisions', ),
@@ -154,19 +158,20 @@
 		 */
 		public function single_template_email( $template ) {
 
-			$cats = get_the_category( get_the_ID() );
-			echo '<pre>';
-			print_r( $cats );
-			echo '</pre>';
-
 			if ( is_singular( 'chi_email' ) ) {
+				return $this->get_template_loader();
+			}
 
-				// Template for CPT CHI Email
-				require_once CHI_MAIL_BASE_DIR . 'public/class-chi-mail-machine-template-loader.php';
+			return $template;
+		}
 
-				$template_loader = new Chi_Mail_Machine_Template_Loader();
+		/**
+		 * Archive Template for CPT: email
+		 */
+		public function archive_template_email( $template ) {
 
-				return $template_loader->get_template_part( 'single', 'chi_email', false );
+			if ( is_archive( 'chi_email' ) ) {
+				return $this->get_template_loader();
 			}
 
 			return $template;
@@ -182,6 +187,42 @@
 			}
 
 			return $link;
+		}
+
+		public function get_template_loader() {
+
+			// Get all informacion about categories
+			$cats = get_the_category( get_the_ID() );
+
+			// Template for CPT CHI Email
+			require_once CHI_MAIL_BASE_DIR . 'public/class-chi-mail-machine-template-loader.php';
+
+			$template_loader = new Chi_Mail_Machine_Template_Loader();
+
+
+			if ( is_archive( 'chi_email' ) ) {
+
+				if ( file_exists( CHI_MAIL_BASE_DIR . "templates/archive-chi_email-" . $cats[0]->slug . ".php" ) ) {
+
+					require_once CHI_MAIL_BASE_DIR . "templates/archive-chi_email-" . $cats[0]->slug . ".php";
+
+					return $template_loader->get_template_part( 'archive', 'chi_email-' . $cats[0]->slug . '', false );
+				}
+
+				return $template_loader->get_template_part( 'archive', 'chi_email', false );
+			}
+
+			if ( is_singular( 'chi_email' ) ) {
+
+				if ( file_exists( CHI_MAIL_BASE_DIR . "templates/single-chi_email-" . $cats[0]->slug . ".php" ) ) {
+
+					return $template_loader->get_template_part( 'single', 'chi_email-' . $cats[0]->slug . '', false );
+				}
+
+
+				return $template_loader->get_template_part( 'single', 'chi_email', false );
+			}
+
 		}
 
 	}
