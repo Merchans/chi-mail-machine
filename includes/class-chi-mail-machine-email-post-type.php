@@ -108,25 +108,25 @@
 
 			$args = array(
 				'labels'             => $labels,
-				'description'        => __( 'Description.', 'chi-mail-machine' ),
+				'description'        => __( 'Email Custom Post Type for making email', 'chi-mail-machine' ),
 				'public'             => true,
 				'publicly_queryable' => true,
 				'show_ui'            => true,
 				'show_in_menu'       => true,
 				'nav_menu_item'      => true,
 				'query_var'          => true,
-				'hierarchical'      =>  true,
-				'rewrite'            => array('slug' => 'email/%category%'),
+				'rewrite'            => array( 'slug' => 'email/%category%' ),
 				'capability_type'    => 'post',
 				'has_archive'        => 'email',
-				'hierarchical'       => true,
 				'menu_position'      => 2,
 				'menu_icon'          => CHI_MAIL_BASE_URL . '/logo.svg',
 				'supports'           => array( 'title', 'editor', 'revisions', ),
-				'taxonomies'          => array( 'category' ),
+				'taxonomies'         => array( 'category' ),
 			);
 
 			register_post_type( 'chi_email', $args );
+
+
 		}
 
 
@@ -171,4 +171,17 @@
 			return $template;
 		}
 
+		public function single_filter_post_type_link( $link, $post ) {
+			if ( $post->post_type != 'chi_email' ) {
+				return $link;
+			}
+
+			if ( $cats = get_the_terms( $post->ID, 'category' ) ) {
+				$link = str_replace( '%category%', array_pop( $cats )->slug, $link );
+			}
+
+			return $link;
+		}
+
 	}
+
