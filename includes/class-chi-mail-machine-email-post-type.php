@@ -118,6 +118,7 @@
 				'rewrite'            => array( 'slug' => 'email/%category%' ),
 				'capability_type'    => 'post',
 				'has_archive'        => 'email',
+				'show_in_rest' => true,
 				'menu_position'      => 2,
 				'menu_icon'          => CHI_MAIL_BASE_URL . '/logo.svg',
 				'supports'           => array( 'title', 'editor', 'revisions', ),
