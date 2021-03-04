@@ -1,4 +1,171 @@
-/**
- * All of the CSS for your public-facing functionality should be
- * included in this file.
- */
+@charset "UTF-8";
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:300,400,700);
+
+
+
+
+h1.title {
+	font-family: "Open Sans", sans-serif;
+	font-weight: 300;
+	font-size: 1.2rem;
+}
+.card .menu-content li {
+	display: inline-block;
+}
+.card .menu-content a {
+	color: #fff;
+}
+.card .menu-content span {
+	position: absolute;
+	left: 50%;
+	top: 0;
+	font-size: 10px;
+	font-weight: 700;
+	font-family: "Open Sans";
+	transform: translate(-50%, 0);
+}
+.card .wrapper {
+	background-color: #fff;
+	min-height: 350px;
+	width: 100%;
+	position: relative;
+	overflow: hidden;
+	box-shadow: 0 19px 38px rgba(0, 0, 0, 0.3), 0 15px 12px rgba(0, 0, 0, 0.2);
+}
+.card .wrapper:hover .data {
+	transform: translateY(0);
+}
+.card .data {
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	transform: translateY(calc(70px + 1em));
+	transition: transform 0.3s;
+}
+.card .data .content {
+	padding: 1em;
+	position: relative;
+	z-index: 1;
+}
+.card .author {
+	font-size: 12px;
+}
+.card .title {
+	margin-top: 10px;
+}
+.card .text {
+	margin: 0;
+	font-size: 0.8rem;
+}
+.card input[type=checkbox] {
+	display: none;
+}
+.card input[type=checkbox]:checked + .menu-content {
+	transform: translateY(-60px);
+}
+
+
+.box-style-1 .wrapper {
+	background: linear-gradient(
+			0deg
+			, rgba(0, 0, 0, 0.34), rgba(0, 0, 0, 0.34)), url(http://localhost:8888/WordpPress/KongresOnline/wp-content/uploads/2020/09/urologum_bg-full.jpg) center/cover no-repeat;
+
+}
+.box-style-1 .wrapper:hover .menu-content span {
+	transform: translate(-50%, -10px);
+	opacity: 1;
+}
+.box-style-1 .header {
+	color: #fff;
+	padding: 1em;
+}
+.box-style-1 .header::before, .box-style-1 .header::after {
+	content: "";
+	display: table;
+}
+.box-style-1 .header::after {
+	clear: both;
+}
+.box-style-1 .header .date {
+	float: left;
+	font-size: 12px;
+}
+.box-style-1 .menu-content {
+	float: right;
+	font-size: 12px;
+}
+.box-style-1 .menu-content li {
+	margin: 0 5px;
+	position: relative;
+	list-style: none;
+}
+.box-style-1 .menu-content span {
+	transition: all 0.3s;
+	opacity: 0;
+}
+.box-style-1 .data {
+	color: #fff;
+	transform: translateY(calc(70px + 4em));
+}
+.box-style-1 .title a {
+	color: #fff;
+}
+.box-style-1 .button {
+	display: block;
+	width: 100px;
+	margin: 2em auto 1em;
+	text-align: center;
+	font-size: 12px;
+	color: #fff;
+	line-height: 1;
+	position: relative;
+	font-weight: 700;
+}
+.box-style-1 .button::after {
+	content: "→";
+	opacity: 0;
+	position: absolute;
+	right: 0;
+	top: 50%;
+	transform: translate(0, -50%);
+	transition: all 0.3s;
+}
+.box-style-1 .button:hover::after {
+	transform: translate(5px, -50%);
+	opacity: 1;
+}
+
+
+/* CSS GRID */
+
+.grid {
+	padding-top: 15px;
+	/* Grid Fallback */
+	display: flex;
+	flex-wrap: wrap;
+
+	/* Supports Grid */
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+	grid-auto-rows: minmax(150px, auto);
+	grid-gap: 1em;
+}
+
+.module {
+	/* Demo-Specific Styles */
+	background: #eaeaea;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	/* Flex Fallback */
+	margin-left: 5px;
+	margin-right: 5px;
+	flex: 1 1 200px;
+}
+
+/* If Grid is supported, remove the margin we set for the fallback */
+@supports (display: grid) {
+	.module {
+		margin: 0;
+	}
+}

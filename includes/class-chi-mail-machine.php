@@ -128,6 +128,13 @@
 			 */
 			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-chi-mail-machine-email-post-type.php';
 
+			/**
+			 * The class responsible for all Meta Box throw plugin. CMB2 init for meta box
+			 */
+			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'vendor/CMB2/init.php';
+
+			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'vendor/cmb2-field-post-search-ajax/cmb-field-post-search-ajax.php';
+
 			$this->loader = new Chi_Mail_Machine_Loader();
 
 		}
@@ -239,6 +246,10 @@
 			$this->loader->add_filter( 'archive_template', $plugin_post_type, 'archive_template_email');
 
 			$this->loader->add_filter( 'post_type_link', $plugin_post_type, 'single_filter_post_type_link', 3, 2);
+
+			$this->loader->add_filter( 'cmb2_admin_init', $plugin_post_type, 'register_cmb2_metabox_chi_email');
+
+//			$this->loader->add_filter( 'cmb2_init', $plugin_post_type, 'cmb2_post_search_ajax_metaboxes_example');
 
 
 		}
