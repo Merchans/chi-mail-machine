@@ -1,0 +1,20 @@
+.editor-styles-wrapper {
+	background: #F1F1F1 !important;
+}
+
+.wp-block {
+	max-width: 640px;
+}
+
+.author_completed input,
+.editor_completed input,
+.admin_completed input {
+	text-align: center;
+}
+
+thead tr,
+td.author_completed.column-author_completed,
+td.editor_completed.column-editor_completed,
+td.admin_completed.column-admin_completed {
+	text-align: center;
+}

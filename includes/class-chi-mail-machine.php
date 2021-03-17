@@ -128,12 +128,20 @@
 			 */
 			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-chi-mail-machine-email-post-type.php';
 
+			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-chi-mail-machine-email-advertising-post-type.php';
+
 			/**
 			 * The class responsible for all Meta Box throw plugin. CMB2 init for meta box
 			 */
 			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'vendor/CMB2/init.php';
 
 			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'vendor/cmb2-field-post-search-ajax/cmb-field-post-search-ajax.php';
+
+			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'vendor/simple-html-dom/simple_html_dom.php';
+
+//			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'vendor/cmb2-field-ajax-search/cmb2-field-ajax-search.php';
+
+//			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'vendor/cmb2-term-select/cmb2-term-select.php';
 
 			$this->loader = new Chi_Mail_Machine_Loader();
 
@@ -235,21 +243,23 @@
 		 */
 		public function define_post_type_hooks() {
 
-			$plugin_post_type = new Chi_Mail_Machine_Email_Post_Type($this->get_plugin_name(), $this->get_version() );
+			$plugin_post_type          = new Chi_Mail_Machine_Email_Post_Type( $this->get_plugin_name(), $this->get_version() );
+			$plugin_post_type_email_ad = new Chi_Mail_Machine_Email_Ad_Post_Type( $this->get_plugin_name(), $this->get_version() );
 
-			$this->loader->add_action( 'init', $plugin_post_type, 'init');
 
-			$this->loader->add_filter( 'the_content', $plugin_post_type, 'content_single_email');
+			$this->loader->add_action( 'init', $plugin_post_type, 'init' );
 
-			$this->loader->add_filter( 'single_template', $plugin_post_type, 'single_template_email');
+			$this->loader->add_action( 'init', $plugin_post_type_email_ad, 'init' );
 
-			$this->loader->add_filter( 'archive_template', $plugin_post_type, 'archive_template_email');
+			$this->loader->add_filter( 'the_content', $plugin_post_type, 'content_single_email' );
 
-			$this->loader->add_filter( 'post_type_link', $plugin_post_type, 'single_filter_post_type_link', 3, 2);
+			$this->loader->add_filter( 'single_template', $plugin_post_type, 'single_template_email' );
 
-			$this->loader->add_filter( 'cmb2_admin_init', $plugin_post_type, 'register_cmb2_metabox_chi_email');
+			$this->loader->add_filter( 'archive_template', $plugin_post_type, 'archive_template_email' );
 
-//			$this->loader->add_filter( 'cmb2_init', $plugin_post_type, 'cmb2_post_search_ajax_metaboxes_example');
+			$this->loader->add_filter( 'post_type_link', $plugin_post_type, 'single_filter_post_type_link', 3, 2 );
+
+			$this->loader->add_filter( 'cmb2_admin_init', $plugin_post_type, 'register_cmb2_metabox_chi_email' );
 
 
 		}

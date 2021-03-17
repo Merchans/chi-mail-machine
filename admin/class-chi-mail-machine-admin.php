@@ -74,6 +74,9 @@ class Chi_Mail_Machine_Admin {
 		 */
 
 		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/chi-mail-machine-admin.css', array(), $this->version, 'all' );
+		if ('chi_email' == get_post_type()) {
+			wp_enqueue_style( 'chi-email-editor', plugin_dir_url( __FILE__ ) . 'css/chi-editor.css', array(), $this->version, 'all' );
+		}
 
 	}
 

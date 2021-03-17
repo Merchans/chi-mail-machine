@@ -2,3 +2,50 @@
  * All of the CSS for your admin-specific functionality should be
  * included in this file.
  */
+
+/**
+	CMB2 Style
+ */
+.cmb-repeat-table {
+	border: none!important;
+	background-color: transparent!important;
+}
+.cmb-repeat-table .cmb-row.cmb-repeat-row:before {
+	border: none;
+	line-height: 50px!important;
+	padding-right: 9px!important;
+	width: auto!important;
+	border: none!important;
+}
+.cmb-repeat-table+.cmb-add-row:before {
+	content: '';
+	width: 1px;
+	height: 1.6em;
+	display: block;
+	margin-left: 17px;
+	background-color: transparent!important;
+}
+.cmb-repeat-table+.cmb-add-row {
+	text-align: right;
+}
+.cmb-repeat-table .cmb-remove-row>.cmb-remove-row-button {
+	top: 3px!important;
+}
+.cmb-repeat-table .cmb-remove-row>.cmb-remove-row-button:before {
+	top: 4px!important;
+	right: 9px!important;
+}
+.postbox-header {
+	border: none;
+}
+.cmb-ajax-search-results {
+	width: auto;
+}
+
+.wp-core-ui select {
+	width: 218px!important;
+}
+.edit-post-meta-boxes-area #poststuff .stuffbox>h3, .edit-post-meta-boxes-area #poststuff h2.hndle, .edit-post-meta-boxes-area #poststuff h3.hndle,
+#side-sortables .cmb2-wrap label, .inner-sidebar .cmb2-wrap label {
+	font-weight: normal;
+}

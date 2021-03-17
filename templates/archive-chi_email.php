@@ -12,16 +12,16 @@
 				<section class="box-style-1 card module">
 
 					<div class="wrapper"
-						 style="background: linear-gradient(0deg, rgba(0, 0, 0, 0.34), rgba(0, 0, 0, 0.34)),  url(<?php echo $category_bg; ?>) no-repeat center center; background-size: cover;">
+						 style="background: linear-gradient(0deg, rgba(0, 0, 0, 0.34), rgba(0, 0, 0, 0.34)),  url(<?php echo $category_bg; ?>) no-repeat center center; background-size: cover; border-radius: 3px;">
 						<div class="header">
 							<div class="date">
-								<span class="day"><?php the_date( 'd', ); ?></span>
-								<span class="month"><?php echo get_the_date( 'M', ); ?></span>
+								<span class="day"><?php echo get_the_date( 'd.', ); ?></span>
+								<span class="month"><?php echo get_the_date( 'F', ); ?></span>
 								<span class="year"><?php echo get_the_date( 'Y', ); ?></span>
 							</div>
 							<ul class="menu-content">
 								<li>
-									<a class="fa fa-tag"></a> <?php the_category( ' ' ); ?>
+									<a class="fa fa-tag"></a> <?php get_post_meta(get_the_ID(), ); ?>
 								</li>
 							</ul>
 						</div>

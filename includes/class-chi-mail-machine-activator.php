@@ -31,12 +31,15 @@
 		 */
 		public static function activate() {
 
-			require_once CHI_MAIL_BASE_DIR .'/includes/class-chi-mail-machine-email-post-type.php';
+			require_once CHI_MAIL_BASE_DIR . '/includes/class-chi-mail-machine-email-post-type.php';
+			require_once CHI_MAIL_BASE_DIR . '/includes/class-chi-mail-machine-email-advertising-post-type.php';
 
 			// Register CPT
-			$plugin_post_type = new Chi_Mail_Machine_Email_Post_Type( CHI_MAIL_MACHINE_NAME, CHI_MAIL_MACHINE_VERSION );
+			$plugin_post_type_email    = new Chi_Mail_Machine_Email_Post_Type( CHI_MAIL_MACHINE_NAME, CHI_MAIL_MACHINE_VERSION );
+			$plugin_post_type_email_ad = new Chi_Mail_Machine_Email_Ad_Post_Type( CHI_MAIL_MACHINE_NAME, CHI_MAIL_MACHINE_VERSION );
 
-			$plugin_post_type->init();
+			$plugin_post_type_email->init();
+			$plugin_post_type_email_ad->init();
 
 			// Flush Permalinks
 			flush_rewrite_rules();
