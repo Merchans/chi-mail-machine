@@ -137,11 +137,11 @@
 
 			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'vendor/cmb2-field-post-search-ajax/cmb-field-post-search-ajax.php';
 
-			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'vendor/simple-html-dom/simple_html_dom.php';
+//			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'vendor/simple-html-dom/simple_html_dom.php';
 
-//			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'vendor/cmb2-field-ajax-search/cmb2-field-ajax-search.php';
+			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'vendor/cmb2-field-ajax-search/cmb2-field-ajax-search.php';
 
-//			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'vendor/cmb2-term-select/cmb2-term-select.php';
+			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'vendor/cmb2-term-select/cmb2-term-select.php';
 
 			$this->loader = new Chi_Mail_Machine_Loader();
 
