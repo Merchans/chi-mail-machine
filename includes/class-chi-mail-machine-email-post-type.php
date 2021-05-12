@@ -197,7 +197,7 @@
 <g>
 </g>
 </svg>' ),
-				'supports'           => array( 'title', 'editor', 'revisions', 'excerpt' ),
+				'supports'           => array( 'title','comments', 'editor', 'revisions', 'excerpt' ),
 			);
 
 
@@ -323,9 +323,7 @@
 					'post_status'    => array( 'publish', 'pending' ),
 					'posts_per_page' => - 1
 				),
-				'attributes' => array(
-					'required' => 'required',
-				),
+
 			) );
 
 			$metabox->add_field( array(
@@ -335,9 +333,7 @@
 				'taxonomy'       => 'category', //Enter Taxonomy Slug
 				'type'           => 'taxonomy_select',
 				'remove_default' => 'true', // Removes the default metabox provided by WP core.
-				'attributes'     => array(
-					'required' => 'required',
-				),
+
 			) );
 
 			$metabox->add_field( array(
@@ -345,9 +341,7 @@
 				'description' => __( 'Enter the email number following the previous email.', 'chi-mail-machine' ),
 				'id'          => $prefix . '_special_number',
 				'type'        => 'text',
-				'attributes'  => array(
-					'required' => 'required',
-				),
+
 			) );
 
 			$metabox->add_field( array(
@@ -360,7 +354,7 @@
 
 			$metabox_checbox = new_cmb2_box( array(
 				'id'           => $prefix . '_state',
-				'title'        => __( 'Email state', 'chi-mail-machine' ),
+				'title'        => __( 'State', 'chi-mail-machine' ),
 				'object_types' => array( 'chi_email' ),
 				'context'      => 'normal',
 				'priority'     => 'high',
@@ -415,9 +409,6 @@
 					'post_type'      => array( 'chi_email_ad' ),
 					'post_status'    => array( 'publish', 'pending' ),
 					'posts_per_page' => - 1
-				),
-				'attributes' => array(
-					'required' => 'required',
 				),
 			) );
 
@@ -478,6 +469,8 @@ Nepřejete-li si dostávat tyto e-maily, klikněte prosím ZDE.',
 				'desc' => 'field description (optional)',
 				'id'   => 'wiki_test_checkbox',
 				'type' => 'checkbox',
+				'default_cb'   => [ $this, 'yourprefix_theme_options_page_output' ],
+
 			) );
 
 		}
@@ -517,5 +510,4 @@ Nepřejete-li si dostávat tyto e-maily, klikněte prosím ZDE.',
 		}
 
 	}
-
 

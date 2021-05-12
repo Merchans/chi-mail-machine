@@ -262,6 +262,7 @@
 			$this->loader->add_filter( 'cmb2_admin_init', $plugin_post_type, 'register_cmb2_metabox_chi_email' );
 
 
+
 		}
 
 	}

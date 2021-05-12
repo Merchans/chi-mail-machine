@@ -3,8 +3,11 @@
   <component name="ChangeListManager">
     <list default="true" id="e90737f4-dedb-400e-8fa8-754272e7e2b7" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/css/chi-editor.css" beforeDir="false" afterPath="$PROJECT_DIR$/admin/css/chi-editor.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/css/chi-mail-machine-admin.css" beforeDir="false" afterPath="$PROJECT_DIR$/admin/css/chi-mail-machine-admin.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/chi-mail-machine.php" beforeDir="false" afterPath="$PROJECT_DIR$/chi-mail-machine.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/includes/class-chi-mail-machine-email-post-type.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/class-chi-mail-machine-email-post-type.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/CMB2" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/CMB2" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/class-chi-mail-machine.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/class-chi-mail-machine.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/vendor/cmb2-field-post-search-ajax" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/cmb2-field-post-search-ajax" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -167,7 +170,7 @@
       <workItem from="1620727343194" duration="12174000" />
       <workItem from="1620805744220" duration="961000" />
       <workItem from="1620806744983" duration="187000" />
-      <workItem from="1620806973086" duration="1734000" />
+      <workItem from="1620806973086" duration="13719000" />
     </task>
     <servers />
   </component>

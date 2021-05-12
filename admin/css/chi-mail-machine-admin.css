@@ -42,9 +42,7 @@
 	width: auto;
 }
 
-.wp-core-ui select {
-	width: 218px!important;
-}
+
 .edit-post-meta-boxes-area #poststuff .stuffbox>h3, .edit-post-meta-boxes-area #poststuff h2.hndle, .edit-post-meta-boxes-area #poststuff h3.hndle,
 #side-sortables .cmb2-wrap label, .inner-sidebar .cmb2-wrap label {
 	font-weight: normal;

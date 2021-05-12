@@ -1,11 +1,24 @@
 .editor-styles-wrapper {
 	background: #F1F1F1 !important;
 }
-
+.postbox,
 .wp-block {
 	max-width: 640px;
 }
 
+.edit-post-layout .interface-interface-skeleton__content {
+	background-color: #f1f1f1;
+}
+
+.edit-post-layout__metaboxes:not(:empty) .edit-post-meta-boxes-area {
+	margin: 0;
+}
+.edit-post-layout__metaboxes:not(:empty){
+	border-top: 2px solid #027cba;
+	padding: 0;
+	margin: 0 auto;
+	width: 640px;
+}
 .author_completed input,
 .editor_completed input,
 .admin_completed input {
@@ -17,4 +30,44 @@ td.author_completed.column-author_completed,
 td.editor_completed.column-editor_completed,
 td.admin_completed.column-admin_completed {
 	text-align: center;
+}
+
+
+/*Comment section*/
+ul.order_notes li .note_content {
+	padding: 10px;
+	background: #efefef;
+	position: relative;
+}
+
+ul.order_notes li .note_content::after {
+	content: "";
+	display: block;
+	position: absolute;
+	bottom: -10px;
+	left: 20px;
+	width: 0;
+	height: 0;
+	border-width: 10px 10px 0 0;
+	border-style: solid;
+	border-color: #efefef transparent;
+}
+
+ul.order_notes {
+	padding: 2px 0 0;
+}
+
+ul.order_notes li p.meta {
+	padding: 10px;
+	color: #999;
+	margin: 0;
+	font-size: 11px;
+}
+
+ul.order_notes li p.meta .exact-date {
+	border-bottom: 1px dotted #999;
+}
+
+ul.order_notes li a.delete_note {
+	color: #a00;
 }

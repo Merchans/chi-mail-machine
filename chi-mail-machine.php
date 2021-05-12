@@ -25,7 +25,7 @@
 	 * Domain Path:       /languages
 	 */
 
-// If this file is called directly, abort.
+	// If this file is called directly, abort.
 	if ( ! defined( 'WPINC' ) ) {
 		die;
 	}
@@ -101,14 +101,14 @@
 	run_chi_mail_machine();
 
 
-//	add_action( 'enqueue_block_editor_assets', 'gd_add_gutenberg_assets' );
-//	function gd_add_gutenberg_assets() {
-//		if ('chi_email' == get_post_type()) {
-//			wp_enqueue_style( 'chi-email-editor', plugin_dir_url( __FILE__ ) . 'admin/css/chi-editor.css' , false );
-//		}
-//	}
+	//	add_action( 'enqueue_block_editor_assets', 'gd_add_gutenberg_assets' );
+	//	function gd_add_gutenberg_assets() {
+	//		if ('chi_email' == get_post_type()) {
+	//			wp_enqueue_style( 'chi-email-editor', plugin_dir_url( __FILE__ ) . 'admin/css/chi-editor.css' , false );
+	//		}
+	//	}
 
-// add 'Questions' column to admin table belonge to CPT 'theory'
+	// add 'Questions' column to admin table belonge to CPT 'theory'
 	function chi_add_post_chi_email_columns( $columns ) {
 		// Remove Date
 		unset( $columns['date'] );
@@ -181,69 +181,69 @@
 		}
 	}
 
-//	function cmb2_render_callback_for_text_test( $field, $escaped_value, $object_id, $object_type, $field_type_object ) {
-//		echo '<form class="cmb-form" method="post"><input type="submit" name="submit-cmb" value="' . __( 'Save Settings', 'give' ) . '" class="button-primary"></div></form>';
-//	}
-//	add_action( 'cmb2_render_text_test', 'cmb2_render_callback_for_text_test', 10, 5 );
+	//	function cmb2_render_callback_for_text_test( $field, $escaped_value, $object_id, $object_type, $field_type_object ) {
+	//		echo '<form class="cmb-form" method="post"><input type="submit" name="submit-cmb" value="' . __( 'Save Settings', 'give' ) . '" class="button-primary"></div></form>';
+	//	}
+	//	add_action( 'cmb2_render_text_test', 'cmb2_render_callback_for_text_test', 10, 5 );
 
-//	add_filter( 'cmb2_get_metabox_form_format', 'give_modify_cmb2_form_output' );
-//
-//	function give_modify_cmb2_form_output( $args ) {
-//
-//		return '<form class="cmb-form" method="post" id="%1$s" enctype="multipart/form-data" encoding="multipart/form-data"><input type="hidden" name="object_id" value="%2$s">%3$s<div class="submit-wrap"><input type="submit" name="submit-cmb" value="' . __( 'Save Settings', 'give' ) . '" class="button-primary"></div></form>';
-//
-//	}
+	//	add_filter( 'cmb2_get_metabox_form_format', 'give_modify_cmb2_form_output' );
+	//
+	//	function give_modify_cmb2_form_output( $args ) {
+	//
+	//		return '<form class="cmb-form" method="post" id="%1$s" enctype="multipart/form-data" encoding="multipart/form-data"><input type="hidden" name="object_id" value="%2$s">%3$s<div class="submit-wrap"><input type="submit" name="submit-cmb" value="' . __( 'Save Settings', 'give' ) . '" class="button-primary"></div></form>';
+	//
+	//	}
 
-////Add default meta box
-//	add_action( 'add_meta_boxes_chi_email', 'add_custom_meta_box_chi_email' );
-//	function add_custom_meta_box_chi_email( $post ) {
-//		add_meta_box( 'sections_meta_box', 'Add Section', 'show_custom_meta_box' );
-//	}
-//
-//	function show_custom_meta_box() {
-//		//In your case you can use your html::functions
-//		//Your html for select box
-//		$sections = array( 'section1', 'section2' );
-//		$html     = '<select id="sections" name="item[]">';
-//		foreach ( $sections as $key => $section ) {
-//			$html .= '<option value="' . $key . '">' . $section . '</option>';
-//		}
-//		$html .= '</select><br><br>';
-//		$html .= '<input  class="addSection" type="button" value="Add Section">';
-//		echo $html;
-//	}
-//
-////Our custom meta box will be loaded on ajax
-//	function add_custom_meta_box( $post_name ) {
-//		echo '<pre>';
-//		print_r( get_post_meta(
-//				9945,
-//				'chi_email_subject',
-//				true
-//		) );
-//		echo '</pre>';
-//		echo '<pre>';
-//		print_r(get_the_category( 9945
-//		) );
-//		echo '</pre>';
-//		echo '<div id="sections_structure_box" class="postbox ">
-//        <div class="handlediv" title="Click to toggle"><br></div><h3 class="hndle ui-sortable-handle"><span>Section Structure</span></h3>
-//        <div class="inside">
-//            Done
-//        </div>';
-//	}
-//
-////Call ajax
-//	add_action( 'wp_ajax_addStructureBox', 'addStructureBox' );
-////add_action('wp_ajax_noprev_addStructureBox', 'addStructureBox');
-//	function addStructureBox() {
-//		add_custom_meta_box( $_POST['section'] );
-//		exit;
-//	}
-//
-////In your case you can add script in your style
-////Add script
-//	add_action( 'admin_head', 'ajax_script' );
+	////Add default meta box
+	//	add_action( 'add_meta_boxes_chi_email', 'add_custom_meta_box_chi_email' );
+	//	function add_custom_meta_box_chi_email( $post ) {
+	//		add_meta_box( 'sections_meta_box', 'Add Section', 'show_custom_meta_box' );
+	//	}
+	//
+	//	function show_custom_meta_box() {
+	//		//In your case you can use your html::functions
+	//		//Your html for select box
+	//		$sections = array( 'section1', 'section2' );
+	//		$html     = '<select id="sections" name="item[]">';
+	//		foreach ( $sections as $key => $section ) {
+	//			$html .= '<option value="' . $key . '">' . $section . '</option>';
+	//		}
+	//		$html .= '</select><br><br>';
+	//		$html .= '<input  class="addSection" type="button" value="Add Section">';
+	//		echo $html;
+	//	}
+	//
+	////Our custom meta box will be loaded on ajax
+	//	function add_custom_meta_box( $post_name ) {
+	//		echo '<pre>';
+	//		print_r( get_post_meta(
+	//				9945,
+	//				'chi_email_subject',
+	//				true
+	//		) );
+	//		echo '</pre>';
+	//		echo '<pre>';
+	//		print_r(get_the_category( 9945
+	//		) );
+	//		echo '</pre>';
+	//		echo '<div id="sections_structure_box" class="postbox ">
+	//        <div class="handlediv" title="Click to toggle"><br></div><h3 class="hndle ui-sortable-handle"><span>Section Structure</span></h3>
+	//        <div class="inside">
+	//            Done
+	//        </div>';
+	//	}
+	//
+	////Call ajax
+	//	add_action( 'wp_ajax_addStructureBox', 'addStructureBox' );
+	////add_action('wp_ajax_noprev_addStructureBox', 'addStructureBox');
+	//	function addStructureBox() {
+	//		add_custom_meta_box( $_POST['section'] );
+	//		exit;
+	//	}
+	//
+	////In your case you can add script in your style
+	////Add script
+	//	add_action( 'admin_head', 'ajax_script' );
 	function ajax_script() { ?>
 		<script>
 			jQuery(document).ready(function ($) {
@@ -258,3 +258,308 @@
 		</script>
 		<?php
 	}
+
+?>
+<?php
+
+	add_action( 'admin_menu', 'custom_mail_menu' );
+	function custom_mail_menu() {
+
+//create new top-level menu
+		add_options_page( 'Custom Mail Settings', 'Custom Mail Settings', 'administrator', __FILE__, 'custom_mail_settings_page' );
+
+//call register settings function
+		add_action( 'admin_init', 'custom_mail_settings' );
+	}
+
+
+	function custom_mail_settings() {
+//register our settings
+		register_setting( 'custom-mail-settings-group-15167', 'custom_mail_to' );
+		register_setting( 'custom-mail-settings-group-15167', 'custom_mail_from' );
+		register_setting( 'custom-mail-settings-group-15167', 'custom_mail_sub' );
+		register_setting( 'custom-mail-settings-group-15167', 'custom_mail_message' );
+	}
+
+	function sendMail() {
+		if ( $_POST['send'] ) {
+			$sendto   = esc_attr( get_option( 'custom_mail_to' ) );
+			$sendfrom = esc_attr( get_option( 'custom_mail_from' ) );
+			$sendsub  = esc_attr( get_option( 'custom_mail_sub' ) );
+			$sendmess = esc_attr( get_option( 'custom_mail_message' ) );
+			$headers  = "From: Wordpress <" . $sendfrom . ">";
+			wp_mail( $sendto, $sendsub, $sendmess, $headers );
+		}
+	}
+
+	function custom_mail_settings_page() {
+
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_die( __( 'You do not have sufficient pilchards to access this page.' ) );
+		}
+
+
+		?>
+		<div class="wrap">
+			<h2>Custom Mail Settings</h2>
+
+			<form method="post" action="">
+				<?php settings_fields( 'custom-mail-settings-group-15167' ); ?>
+				<?php do_settings_sections( 'custom-mail-settings-group-15167' ); ?>
+				<table class="form-table" style="width: 50%">
+					<tr valign="top">
+						<th scope="row">To</th>
+						<td>
+							<input style="width: 100%" type="text" name="custom_mail_to"
+								   value="<?php echo esc_attr( get_option( 'custom_mail_to' ) ); ?>"/>
+						</td>
+					</tr>
+
+					<tr valign="top">
+						<th scope="row">From</th>
+						<td>
+							<input style="width: 100%" type="text" name="custom_mail_from"
+								   value="<?php echo esc_attr( get_option( 'custom_mail_from' ) ); ?>"/>
+						</td>
+					</tr>
+
+					<tr valign="top">
+						<th scope="row">Subject</th>
+						<td>
+							<input style="width: 100%" type="text" name="custom_mail_sub"
+								   value="<?php echo esc_attr( get_option( 'custom_mail_sub' ) ); ?>"/>
+						</td>
+					</tr>
+					<tr valign="top">
+						<th scope="row">Message</th>
+						<!-- <td><input type="text" name="custom_mail_message" value="?php echo esc_attr( get_option('custom_mail_message') ); ?>" /></td> /-->
+						<td>
+					<textarea style="text-align: left;" name="custom_mail_message" rows="10"
+							  cols="62"><?php echo esc_attr( get_option( 'custom_mail_message' ) ); ?></textarea>
+						</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td><?php submit_button( 'Send', 'primary', 'send' ); ?></td>
+						</td>
+
+					</tr>
+				</table>
+			</form>
+		</div>
+	<?php }
+
+
+	/**
+	 * Generated by the WordPress Meta Box Generator
+	 * https://jeremyhixon.com/tool/wordpress-meta-box-generator/
+	 *
+	 * Retrieving the values:
+	 * Notes on the text = get_post_meta( get_the_ID(), 'send_email_notes-on-the-text', true )
+	 */
+	class CHI_EMAIL_SENDER {
+		private $config = '{"title":"Comments to E-mail","description":"If there are any comments on the email, please contact the author","prefix":"send_email_","domain":"chi-mail-machine","class_name":"CHI_EMAIL_SENDER","post-type":["post"],"context":"normal","priority":"low","cpt":"chi_email","fields":[{"type":"textarea","label":"Notes on the text","id":"send_email_notes-on-the-text"}]}';
+
+		public function __construct() {
+			$this->config = json_decode( $this->config, true );
+			$this->process_cpts();
+			add_action( 'add_meta_boxes', [ $this, 'add_meta_boxes' ] );
+			add_action( 'admin_head', [ $this, 'admin_head' ] );
+			add_action( 'save_post', [ $this, 'save_post' ] );
+		}
+
+		public function process_cpts() {
+			if ( ! empty( $this->config['cpt'] ) ) {
+				if ( empty( $this->config['post-type'] ) ) {
+					$this->config['post-type'] = [];
+				}
+				$parts                     = explode( ',', $this->config['cpt'] );
+				$parts                     = array_map( 'trim', $parts );
+				$this->config['post-type'] = array_merge( $this->config['post-type'], $parts );
+			}
+		}
+
+		public function add_meta_boxes() {
+			foreach ( $this->config['post-type'] as $screen ) {
+				add_meta_box(
+						sanitize_title( $this->config['title'] ),
+						$this->config['title'],
+						[ $this, 'add_meta_box_callback' ],
+						$screen,
+						$this->config['context'],
+						$this->config['priority']
+				);
+			}
+		}
+
+		public function admin_head() {
+			global $typenow;
+			if ( in_array( $typenow, $this->config['post-type'] ) ) {
+				?><?php
+			}
+		}
+
+		public function save_post( $post_id ) {
+
+			foreach ( $this->config['fields'] as $field ) {
+				switch ( $field['type'] ) {
+					default:
+						if ( isset( $_POST[ $field['id'] ] ) ) {
+
+							if ( empty( $_POST[ $field['id'] ] ) ) {
+								return;
+							}
+
+							$sanitized = sanitize_text_field( $_POST[ $field['id'] ] );
+
+							$author_id = get_post_field( 'post_author', $post_id );
+							$agent     = $_SERVER['HTTP_USER_AGENT'];
+							$data      = array(
+									'comment_post_ID'      => $post_id,
+									'comment_author'       => get_the_author_meta( 'nickname', $author_id ),
+									'comment_author_email' => get_the_author_meta( 'user_email', $author_id ),
+									'comment_content'      => $sanitized,
+									'comment_author_IP'    => get_the_user_ip(),
+									'comment_agent'        => $agent,
+									'comment_date'         => date( 'Y-m-d H:i:s' ),
+									'comment_date_gmt'     => date( 'Y-m-d H:i:s' ),
+									'comment_approved'     => 1,
+							);
+
+//							update_post_meta( $post_id, $field['id'], $sanitized );
+							wp_insert_comment( $data );
+						}
+				}
+			}
+		}
+
+		public function add_meta_box_callback() {
+			echo '<div class="rwp-description">' . $this->config['description'] . '</div>';
+			$this->fields_table();
+		}
+
+		private function fields_table() {
+
+			$args     = array(
+					'post_id' => get_the_ID(),   // Use post_id, not post_ID
+			);
+			$comments = get_comments( $args );
+			?>
+			<ul class="order_notes">
+				<?php foreach ( $comments as $comment ) : ?>
+					<li rel="<?php $comment->comment_ID; ?>" class="note">
+						<div class="note_content">
+							<p><?php echo $comment->comment_content; ?></p>
+						</div>
+						<p class="meta">
+							<abbr class="exact-date" title="<?php echo $comment->comment_date_gmt ?>">
+								<?php echo $comment->comment_date; ?></abbr>
+							<?php echo $comment->comment_author; ?>
+							<a href="<?php echo admin_url( '/comment.php?action=editcomment&c=28' ); ?>"
+							   class="vim-q comment-inline button-link" role="button">Edit note</a> |
+							<a href="<?php echo admin_url( '/comment.php?action=trashcomment&c=28' ); ?>"
+							   class="delete_note" role="button">Delete note</a>
+						</p>
+					</li>
+				<?php endforeach ?>
+			</ul>
+			<table class="form-table" role="presentation">
+				<tbody><?php
+					foreach ( $this->config['fields'] as $field ) {
+						?>
+						<tr>
+						<th scope="row"><?php $this->label( $field ); ?></th>
+						<td><?php $this->field( $field ); ?></td>
+						</tr><?php
+					}
+				?></tbody>
+			</table>
+			<div style="text-align: right">
+				<input id="publish" class="button-primary" type="submit" value="Save" accesskey="p" tabindex="5"
+					   name="save">
+			</div>
+			<?php
+		}
+
+		private function label( $field ) {
+			switch ( $field['type'] ) {
+				default:
+					printf(
+							'<label class="" for="%s">%s</label>',
+							$field['id'], $field['label']
+					);
+			}
+		}
+
+		private function field( $field ) {
+			switch ( $field['type'] ) {
+				case 'textarea':
+					$this->textarea( $field );
+					break;
+				default:
+					$this->input( $field );
+			}
+		}
+
+		private function input( $field ) {
+			printf(
+					'<input class="regular-text %s" id="%s" name="%s" %s type="%s" value="%s">',
+					isset( $field['class'] ) ? $field['class'] : '',
+					$field['id'], $field['id'],
+					isset( $field['pattern'] ) ? "pattern='{$field['pattern']}'" : '',
+					$field['type'],
+					$this->value( $field )
+			);
+		}
+
+		private function textarea( $field ) {
+			printf(
+					'<textarea class="regular-text" id="%s" name="%s" rows="%d">%s</textarea>',
+					$field['id'], $field['id'],
+					isset( $field['rows'] ) ? $field['rows'] : 5,
+					$this->value( $field )
+			);
+		}
+
+		private function value( $field ) {
+			global $post;
+			if ( metadata_exists( 'post', $post->ID, $field['id'] ) ) {
+				$value = get_post_meta( $post->ID, $field['id'], true );
+			} else if ( isset( $field['default'] ) ) {
+				$value = $field['default'];
+			} else {
+				return '';
+			}
+
+			return str_replace( '\u0027', "'", $value );
+		}
+
+	}
+
+	new CHI_EMAIL_SENDER;
+
+	function get_the_user_ip() {
+
+		if ( ! empty( $_SERVER['HTTP_CLIENT_IP'] ) ) {
+
+//check ip from share internet
+
+			$ip = $_SERVER['HTTP_CLIENT_IP'];
+
+		} elseif ( ! empty( $_SERVER['HTTP_X_FORWARDED_FOR'] ) ) {
+
+//to check ip is pass from proxy
+
+			$ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+
+		} else {
+
+			$ip = $_SERVER['REMOTE_ADDR'];
+
+		}
+
+		return apply_filters( 'wpb_get_ip', $ip );
+
+	}
+
+	add_shortcode( 'display_ip', 'get_the_user_ip' );
