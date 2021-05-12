@@ -244,17 +244,17 @@
 ////In your case you can add script in your style
 ////Add script
 //	add_action( 'admin_head', 'ajax_script' );
-//	function ajax_script() { ?>
-<!--		<script>-->
-<!--			jQuery(document).ready(function ($) {-->
-<!--				$('.addSection').on('click', function () {-->
-<!--					var selectedSection = $('#sections option:selected').text();-->
-<!--					console.log(selectedSection);-->
-<!--					$.post(ajaxurl, {action: 'addStructureBox', section: selectedSection}, function (data) {-->
-<!--						$('#sections_meta_box').parent().append(data);-->
-<!--					});-->
-<!--				});-->
-<!--			});-->
-<!--		</script>-->
-<!--		--><?php
-//	}
+	function ajax_script() { ?>
+		<script>
+			jQuery(document).ready(function ($) {
+				$('.addSection').on('click', function () {
+					var selectedSection = $('#sections option:selected').text();
+					console.log(selectedSection);
+					$.post(ajaxurl, {action: 'addStructureBox', section: selectedSection}, function (data) {
+						$('#sections_meta_box').parent().append(data);
+					});
+				});
+			});
+		</script>
+		<?php
+	}
