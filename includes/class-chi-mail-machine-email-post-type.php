@@ -306,13 +306,13 @@
 				'id'           => 'chi_email_details',
 				'title'        => __( 'Creating links', 'chi-mail-machine' ),
 				'object_types' => array( 'chi_email' ),
-				'context'      => 'side',
+				'context'      => 'normal',
 				'priority'     => 'high',
 			) );
 
 			$metabox->add_field( array(
 				'name'       => __( 'Choose related posts', 'chi-mail-machine' ),
-				'id'         => 'chi_email_post_search_ajax_multiple',
+				'id'         => $prefix . '_search_ajax_multiple',
 				'type'       => 'post_search_ajax',
 				'desc'       => __( 'Select the articles you want to have in the links', 'chi-mail-machine' ),
 				// Optional :
@@ -331,7 +331,7 @@
 			$metabox->add_field( array(
 				'name'           => __( 'Choose special', 'chi-mail-machine' ),
 				'desc'           => __( 'Choose the special to which the email belongs', 'chi-mail-machine' ),
-				'id'             => 'wiki_test_taxonomy_select',
+				'id'             => $prefix . '_taxonomy_select',
 				'taxonomy'       => 'category', //Enter Taxonomy Slug
 				'type'           => 'taxonomy_select',
 				'remove_default' => 'true', // Removes the default metabox provided by WP core.
@@ -343,7 +343,7 @@
 			$metabox->add_field( array(
 				'name'        => __( 'Email in order', 'chi-mail-machine' ),
 				'description' => __( 'Enter the email number following the previous email.', 'chi-mail-machine' ),
-				'id'          => 'chi_email_special_number',
+				'id'          => $prefix . '_special_number',
 				'type'        => 'text',
 				'attributes'  => array(
 					'required' => 'required',
@@ -353,7 +353,7 @@
 			$metabox->add_field( array(
 				'name'        => __( 'Email link parameters', 'chi-mail-machine' ),
 				'description' => __( 'To add special parameters to links' ),
-				'id'          => 'chi_email_special_parameters',
+				'id'          => $prefix . '_special_parameters',
 				'type'        => 'text',
 				'repeatable'  => true,
 			) );
@@ -362,7 +362,7 @@
 				'id'           => $prefix . '_state',
 				'title'        => __( 'Email state', 'chi-mail-machine' ),
 				'object_types' => array( 'chi_email' ),
-				'context'      => 'side',
+				'context'      => 'normal',
 				'priority'     => 'high',
 			) );
 
@@ -399,18 +399,18 @@
 				'id'           => $prefix . '_ad_details',
 				'title'        => __( 'Email Ad Section', 'chi-mail-machine' ),
 				'object_types' => array( 'chi_email' ),
-				'context'      => 'side',
+				'context'      => 'normal',
 				'priority'     => 'low',
 			) );
 
 			$metabox_ad_section->add_field( array(
 				'name'       => __( 'Select the ad that belongs to the email', 'chi-mail-machine' ),
-				'id'         => $prefix . '_ad_post_search_ajax_multiple',
+				'id'         => $prefix . '_ad_search_ajax_multiple',
 				'type'       => 'post_search_ajax',
 				'desc'       => __( 'Select the AD to you want to have in the Email', 'chi-mail-machine' ),
 				// Optional :
 				'limit'      => 10,       // Limit selection to X items only (default 1)
-				'sortable'   => true,    // Allow selected items to be sortable (default false)
+				'sortable'   => false,    // Allow selected items to be sortable (default false)
 				'query_args' => array(
 					'post_type'      => array( 'chi_email_ad' ),
 					'post_status'    => array( 'publish', 'pending' ),
@@ -422,7 +422,7 @@
 			) );
 
 			$metabox_ad_section->add_field( array(
-				'name'    => __( 'Test Text Area', 'cmb2' ),
+				'name'    => __( 'Advertising information', 'chi-mail-machine' ),
 				'id'      => $prefix . '_textarea',
 				'type'    => 'textarea',
 				'default' => '
@@ -437,8 +437,50 @@ Nepřejete-li si dostávat tyto e-maily, klikněte prosím ZDE.',
 				),
 			) );
 
-		}
 
+			$metabox_ad_section_email = new_cmb2_box( array(
+				'id'           => $prefix . '_sender',
+				'title'        => __( 'Email Sender', 'chi-mail-machine' ),
+				'object_types' => array( 'chi_email' ),
+				'context'      => 'normal',
+				'priority'     => 'low',
+			) );
+
+			$metabox_ad_section_email->add_field( array(
+				'name' => __( 'Date the email was sent', 'chi-mail-machine' ),
+				'id'   => $prefix . '_date_sent',
+				'type' => 'text_datetime_timestamp',
+			) );
+
+			//Urologům CZ - Newsletter č. 61 - rozesílka 16.3.2021 11:30
+
+			$metabox_ad_section_email->add_field( array(
+				'name'    => __( 'Email Subject', 'chi-mail-machine' ),
+				'desc'    => __( 'Subject is one of the first things the recipient of the message reads.', 'chi-mail-machine' ),
+				'default' => 'standard value (optional)',
+				'id'      => $prefix . '_subjet',
+				'type'    => 'text',
+			) );
+
+			$metabox_ad_section_email->add_field( array(
+				'name'    => __( 'Email massage', 'chi-mail-machine' ),
+				'id'      => $prefix . '_massage_textarea',
+				'type'    => 'textarea',
+				'default' => '',
+				'options' => array(
+					'tooltip-class' => 'fa-info-circle',
+					'tooltip'       => 'This is info about this setting or field',
+				),
+			) );
+
+			$metabox_ad_section_email->add_field( array(
+				'name' => 'Test Checkbox',
+				'desc' => 'field description (optional)',
+				'id'   => 'wiki_test_checkbox',
+				'type' => 'checkbox',
+			) );
+
+		}
 
 		public function cmb_show_meta_to_chosen_roles( $cmb ) {
 

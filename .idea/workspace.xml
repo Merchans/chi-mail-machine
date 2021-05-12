@@ -3,7 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="e90737f4-dedb-400e-8fa8-754272e7e2b7" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/chi-mail-machine.php" beforeDir="false" afterPath="$PROJECT_DIR$/chi-mail-machine.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/class-chi-mail-machine-email-post-type.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/class-chi-mail-machine-email-post-type.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/CMB2" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/CMB2" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/vendor/cmb2-field-post-search-ajax" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/cmb2-field-post-search-ajax" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -17,6 +18,14 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
   </component>
   <component name="PhpWorkspaceProjectConfiguration">
     <include_path>
@@ -158,7 +167,7 @@
       <workItem from="1620727343194" duration="12174000" />
       <workItem from="1620805744220" duration="961000" />
       <workItem from="1620806744983" duration="187000" />
-      <workItem from="1620806973086" duration="635000" />
+      <workItem from="1620806973086" duration="1734000" />
     </task>
     <servers />
   </component>
