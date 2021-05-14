@@ -71,3 +71,13 @@ ul.order_notes li p.meta .exact-date {
 ul.order_notes li a.delete_note {
 	color: #a00;
 }
+.note_content.note_content--info::after{
+	border-color: #a7cedc transparent!important;
+}
+.note_content.note_content--info{
+	background: #a7cedc!important;
+}
+
+.spinner {
+	margin: 5px 0px;
+}
