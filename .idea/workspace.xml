@@ -2,10 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e90737f4-dedb-400e-8fa8-754272e7e2b7" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/js/myjquery.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/admin/css/chi-editor.css" beforeDir="false" afterPath="$PROJECT_DIR$/admin/css/chi-editor.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/chi-mail-machine.php" beforeDir="false" afterPath="$PROJECT_DIR$/chi-mail-machine.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/includes/class-chi-mail-machine-email-post-type.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/class-chi-mail-machine-email-post-type.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/vendor/cmb2-field-post-search-ajax" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/cmb2-field-post-search-ajax" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -16,6 +15,13 @@
   <component name="ComposerSettings" doNotAsk="true" synchronizationState="SYNCHRONIZE">
     <pharConfigPath>$PROJECT_DIR$/composer.json</pharConfigPath>
     <execution />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="JavaScript File" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -170,7 +176,8 @@
       <workItem from="1620806744983" duration="187000" />
       <workItem from="1620806973086" duration="18102000" />
       <workItem from="1620836331300" duration="6476000" />
-      <workItem from="1620882360058" duration="23222000" />
+      <workItem from="1620882360058" duration="27319000" />
+      <workItem from="1621033596792" duration="1720000" />
     </task>
     <servers />
   </component>

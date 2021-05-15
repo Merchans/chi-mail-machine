@@ -912,7 +912,8 @@
 							// This is the post.php url we localized (via php) above
 							var url = '<?= admin_url( 'post.php' ) ?>'
 							// Serialize form data
-							var data = $('form#post').serializeArray()
+							var data = $('form#post').serializeArray();
+
 							// Tell PHP what we're doing
 							// NOTE: "name" and "value" are the array keys. This is important. I use int(1) for the value to make sure we don't get a string server-side.
 							data.push({name: 'save_post_ajax', value: 1})
@@ -980,3 +981,91 @@
 
 	add_action( 'admin_footer-post.php', 'my_post_type_xhr', 999 );
 	add_action( 'admin_footer-post-new.php', 'my_post_type_xhr', 999 );
+
+
+//Add default meta box
+	add_action('add_meta_boxes_chi_email', 'add_custom_meta_box_chi_email');
+	function add_custom_meta_box_chi_email($post) {
+add_meta_box('sections_meta_box', 'Add Section', 'show_custom_meta_box');
+	}
+
+
+	function show_custom_meta_box() {
+		//In your case you can use your html::functions
+		//Your html for select box
+		$sections = array('section1','section2');
+		$html = '<select id="sections" name="item[]">';
+		foreach ($sections as $key=>$section) {
+			$html .= '<option value="' . $key . '">' . $section . '</option>';
+		}
+		$html .= '</select><br><br>';
+		$html .=    '<input  class="addSection" type="button" value="Add Section">'  ;
+		echo $html;
+	}
+
+//Our custom meta box will be loaded on ajax
+	function add_custom_meta_box($post_name){
+		echo '<div id="sections_structure_box" class="postbox ">
+        <div class="handlediv" title="Click to toggle"><br></div><h3 class="hndle ui-sortable-handle"><span>Section Structure</span></h3>
+        <div class="inside">
+            Done
+        </div>';
+	}
+
+//Call ajax
+	add_action('wp_ajax_addStructureBox', 'addStructureBox');
+//add_action('wp_ajax_noprev_addStructureBox', 'addStructureBox');
+	function addStructureBox() {
+		add_custom_meta_box($_POST['section']);
+		exit;
+	}
+
+//In your case you can add script in your style
+//Add script
+	add_action('admin_head','text_ajax_script');
+	function text_ajax_script(){ ?>
+		<script>
+			jQuery(document).ready(function ($) {
+				$('.addSection').on('click', function () {
+					var selectedSection = $('#sections option:selected').text();
+					$.post(ajaxurl, {action: 'addStructureBox', section: selectedSection}, function (data) {
+						$('#sections_meta_box').parent().append(data);
+					});
+				});
+			});
+		</script>
+		<?php
+	}
+
+	add_action( 'admin_enqueue_scripts', 'my_enqueue' );
+	function my_enqueue( $hook ) {
+
+		wp_enqueue_script(
+				'ajax-script',
+				plugins_url( '/js/myjquery.js', __FILE__ ),
+				array( 'jquery' ),
+				'1.0.0',
+				true
+		);
+		$title_nonce = wp_create_nonce( 'title_example' );
+		wp_localize_script(
+				'ajax-script',
+				'my_ajax_obj',
+				array(
+						'ajax_url' => admin_url( 'admin-ajax.php' ),
+						'nonce'    => $title_nonce,
+				)
+		);
+	}
+
+	add_action( 'wp_ajax_my_tag_count', 'my_ajax_handler' );
+	function my_ajax_handler() {
+		check_ajax_referer( 'title_example' );
+		update_user_meta( get_current_user_id(), 'title_preference', $_POST['title'] );
+		$args      = array(
+				'tag' => $_POST['title'],
+		);
+		$the_query = new WP_Query( $args );
+		echo $_POST['title'] . ' (' . $the_query->post_count . ') ';
+		wp_die(); // all ajax handlers should die when finished
+	}
