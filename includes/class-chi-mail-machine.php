@@ -131,6 +131,13 @@
 			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-chi-mail-machine-email-advertising-post-type.php';
 
 			/**
+			 * Include
+			 */
+			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-logsystem.php';
+
+			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/functions.php';
+
+			/**
 			 * The class responsible for all Meta Box throw plugin. CMB2 init for meta box
 			 */
 			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'vendor/CMB2/init.php';
@@ -177,6 +184,7 @@
 
 			$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 			$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
+
 
 		}
 
@@ -245,11 +253,15 @@
 
 			$plugin_post_type          = new Chi_Mail_Machine_Email_Post_Type( $this->get_plugin_name(), $this->get_version() );
 			$plugin_post_type_email_ad = new Chi_Mail_Machine_Email_Ad_Post_Type( $this->get_plugin_name(), $this->get_version() );
-
+			$email_sender              = new CHI_EMAIL_SENDER;
 
 			$this->loader->add_action( 'init', $plugin_post_type, 'init' );
 
 			$this->loader->add_action( 'init', $plugin_post_type_email_ad, 'init' );
+
+
+			$this->loader->add_action( 'wp_ajax_example_ajax_request', $email_sender, 'example_ajax_request' );
+
 
 			$this->loader->add_filter( 'the_content', $plugin_post_type, 'content_single_email' );
 
@@ -261,7 +273,7 @@
 
 			$this->loader->add_filter( 'cmb2_admin_init', $plugin_post_type, 'register_cmb2_metabox_chi_email' );
 
-
+			$this->loader->add_filter( 'display_ip', $plugin_post_type, 'get_the_user_ip' );
 
 		}
 
