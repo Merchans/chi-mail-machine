@@ -323,12 +323,13 @@
 
 						var btn = $('#publishComment');
 						btn.on('click', function (e) {
+
 							console.log('clicked');
 							$('.spinner').addClass('is-active');
 							e.preventDefault()
 
-							// This is the post.php url we localized (via php) above
-							var url = '<?= admin_url( 'post.php' ) ?>'
+							// This is the post.php url we localized (via php) above-->
+							var url = <?//= admin_url( 'post.php' ) ?>'
 							// Serialize form data
 							var data = $('form#post').serializeArray();
 
@@ -336,7 +337,7 @@
 							// NOTE: "name" and "value" are the array keys. This is important. I use int(1) for the value to make sure we don't get a string server-side.
 							data.push({name: 'save_post_ajax', value: 1})
 
-							// Replaces wp.autosave.initialCompareString
+						// Replaces wp.autosave.initialCompareString
 							var ajax_updated = false
 
 							/**
@@ -348,7 +349,7 @@
 							 *     when called from wp-includes/js/autosave.js
 							 * wp.autosave.initialCompareString = wp.autosave.getCompareString();
 							 */
-							$(window).unbind('beforeunload.edit-post')
+						$(window).unbind('beforeunload.edit-post')
 							$(window).on('beforeunload.edit-post', function () {
 								var editor = typeof tinymce !== 'undefined' && tinymce.get('content')
 
@@ -397,39 +398,6 @@
 		}
 	}
 
-	add_action( 'admin_footer-post.php', 'my_post_type_xhr', 999 );
-	add_action( 'admin_footer-post-new.php', 'my_post_type_xhr', 999 );
+//	add_action( 'admin_footer-post.php', 'my_post_type_xhr', 999 );
+//	add_action( 'admin_footer-post-new.php', 'my_post_type_xhr', 999 );
 
-
-	add_action( 'admin_enqueue_scripts', 'my_enqueue' );
-	function my_enqueue( $hook ) {
-
-		wp_enqueue_script(
-				'ajax-script',
-				plugins_url( '/js/myjquery.js', __FILE__ ),
-				array( 'jquery' ),
-				'1.0.0',
-				true
-		);
-		$title_nonce = wp_create_nonce( 'title_example' );
-		wp_localize_script(
-				'ajax-script',
-				'my_ajax_obj',
-				array(
-						'ajax_url' => admin_url( 'admin-ajax.php' ),
-						'nonce'    => $title_nonce,
-				)
-		);
-	}
-
-	add_action( 'wp_ajax_my_tag_count', 'my_ajax_handler' );
-	function my_ajax_handler() {
-		check_ajax_referer( 'title_example' );
-		update_user_meta( get_current_user_id(), 'title_preference', $_POST['title'] );
-		$args      = array(
-				'tag' => $_POST['title'],
-		);
-		$the_query = new WP_Query( $args );
-		echo $_POST['title'] . ' (' . $the_query->post_count . ') ';
-		wp_die(); // all ajax handlers should die when finished
-	}

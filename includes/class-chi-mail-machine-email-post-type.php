@@ -197,7 +197,7 @@
 <g>
 </g>
 </svg>' ),
-				'supports'           => array( 'title','comments', 'editor', 'revisions', 'excerpt' ),
+				'supports'           => array( 'title','comments', 'editor', 'revisions', 'excerpt', 'author' ),
 			);
 
 

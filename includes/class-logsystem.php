@@ -55,195 +55,210 @@
 		public function save_post( $post_id ) {
 
 			// Stop WP from clearing custom fields on autosave
-			if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
-				return;
-			}
-
-			// Prevent quick edit from clearing custom fields
-			if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
+			if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE or defined( 'DOING_AJAX' ) && DOING_AJAX ) {
 				return;
 			}
 
 			if ( isset( $_POST['chi_emailchoose-option'] ) ) {
+				foreach ( $this->config['fields'] as $field ) {
 
-				if ( $_POST['chi_emailchoose-option'] == '1' ) {
+					$sanitized = sanitize_text_field( $_POST[ $field['id'] ] );
+					$user      = wp_get_current_user();
+					$meta_key  = $field['id'] . '_user_' . $user->ID;
 
-					foreach ( $this->config['fields'] as $field ) {
-
-
-						$sanitized = sanitize_text_field( $_POST[ $field['id'] ] );
-
-						switch ( $field['id'] ) {
-							case 'chi_emailnotes-on-the-text':
-
-								if ( isset( $_POST[ $field['id'] ] ) ) {
-
-									if ( empty( $_POST[ $field['id'] ] ) ) {
-										break;
-									}
-
-									$author_id = get_current_user_id();
-
-									$agent = $_SERVER['HTTP_USER_AGENT'];
-									$data  = array(
-											'comment_post_ID'      => $post_id,
-											'comment_author'       => get_the_author_meta( 'nickname', $author_id ),
-											'comment_author_email' => get_the_author_meta( 'user_email', $author_id ),
-											'comment_content'      => $sanitized,
-											'comment_author_IP'    => get_the_user_ip(),
-											'comment_agent'        => $agent,
-											'comment_date'         => date( 'Y-m-d H:i:s' ),
-											'comment_date_gmt'     => date( 'Y-m-d H:i:s' ),
-											'comment_approved'     => 1,
-									);
-
-									wp_insert_comment( $data );
-								}
+					switch ( $field['id'] ) {
+						case 'chi_emailnotes-on-the-text':
+							update_post_meta( $post_id, $meta_key, $sanitized );
+							break;
+						default:
+							if ( ! ( in_array( 'administrator', (array) $user->roles ) ) ) {
 								break;
-							default:
-								$user = wp_get_current_user();
-								if ( ! ( in_array( 'administrator', (array) $user->roles ) ) ) {
-									break;
-								}
-								update_post_meta( $post_id, $field['id'], $sanitized );
-								break;
-
-						}
+							}
+							update_post_meta( $post_id, $field['id'], $sanitized );
+							break;
 					}
 				}
-				if ( $_POST['chi_emailchoose-option'] == '2' ) {
-					foreach ( $this->config['fields'] as $field ) {
-
-						$sanitized = sanitize_text_field( $_POST[ $field['id'] ] );
-
-						//RespiroNews - Newsletter č. 32R - rozesílka 8.4.2021 06:00
-						//						Dobrý deň,
-						//
-						//						poprosil by som Vás o nastavenie emailu 32R pre projekt RespiroNews
-						//						na zajtra tj. 8.4.2020 o 6h.
-						//
-						//						Predmet: Plicní embolie při COVID-19 – co je pro ni charakteristické?
-						//
-						//						Za skorú odpoveď
-						//						Ďakujem
-
-						if ( isset( $_POST['chi_email_taxonomy_select'] ) &&
-							 isset( $_POST['chi_email_special_number'] ) &&
-							 isset( $_POST['chi_emailfor'] ) &&
-							 isset( $_POST['chi_emailemail-subject'] ) &&
-							 isset( $_POST['chi_emaildate-the-email-was-sent'] ) &&
-							 isset( $_POST['chi_emailtime-the-email-was-sent'] ) &&
-							 isset( $_POST['chi_emailnotes-on-the-text'] ) ) {
 
 
-							$subject_data = ucwords( $_POST['chi_email_taxonomy_select'] ) . ' - Newsletter č. ' . $_POST['chi_email_special_number'] . ' - rozesílka ' . $_POST['chi_emaildate-the-email-was-sent'] . ' ' . $_POST['chi_emailtime-the-email-was-sent'];
+				//				if ( $_POST['chi_emailchoose-option'] == '1' ) {
+//
+//					foreach ( $this->config['fields'] as $field ) {
+//
+//
+//						$sanitized = sanitize_text_field( $_POST[ $field['id'] ] );
+//
+//						switch ( $field['id'] ) {
+//							case 'chi_emailnotes-on-the-text':
+//
+//								if ( isset( $_POST[ $field['id'] ] ) ) {
+//
+//									if ( empty( $_POST[ $field['id'] ] ) ) {
+//										break;
+//									}
+//
+//									$author_id = get_current_user_id();
+//
+//									$agent = $_SERVER['HTTP_USER_AGENT'];
+//									$data  = array(
+//											'comment_post_ID'      => $post_id,
+//											'comment_author'       => get_the_author_meta( 'nickname', $author_id ),
+//											'comment_author_email' => get_the_author_meta( 'user_email', $author_id ),
+//											'comment_content'      => $sanitized,
+//											'comment_author_IP'    => get_the_user_ip(),
+//											'comment_agent'        => $agent,
+//											'comment_date'         => date( 'Y-m-d H:i:s' ),
+//											'comment_date_gmt'     => date( 'Y-m-d H:i:s' ),
+//											'comment_approved'     => 1,
+//									);
+//
+////									wp_insert_comment( $data );
+//								}
+//								break;
+//							default:
+//								$user = wp_get_current_user();
+//								if ( ! ( in_array( 'administrator', (array) $user->roles ) ) ) {
+//									break;
+//								}
+//								update_post_meta( $post_id, $field['id'], $sanitized );
+//								break;
+//
+//						}
+//					}
+//				}
+//				if ( $_POST['chi_emailchoose-option'] == '2' ) {
+//					foreach ( $this->config['fields'] as $field ) {
+//
+//						$sanitized = sanitize_text_field( $_POST[ $field['id'] ] );
+//
+//						//RespiroNews - Newsletter č. 32R - rozesílka 8.4.2021 06:00
+//						//						Dobrý deň,
+//						//
+//						//						poprosil by som Vás o nastavenie emailu 32R pre projekt RespiroNews
+//						//						na zajtra tj. 8.4.2020 o 6h.
+//						//
+//						//						Predmet: Plicní embolie při COVID-19 – co je pro ni charakteristické?
+//						//
+//						//						Za skorú odpoveď
+//						//						Ďakujem
+//
+//						if ( isset( $_POST['chi_email_taxonomy_select'] ) &&
+//							 isset( $_POST['chi_email_special_number'] ) &&
+//							 isset( $_POST['chi_emailfor'] ) &&
+//							 isset( $_POST['chi_emailemail-subject'] ) &&
+//							 isset( $_POST['chi_emaildate-the-email-was-sent'] ) &&
+//							 isset( $_POST['chi_emailtime-the-email-was-sent'] ) &&
+//							 isset( $_POST['chi_emailnotes-on-the-text'] ) ) {
+//
+//
+//							$subject_data = ucwords( $_POST['chi_email_taxonomy_select'] ) . ' - Newsletter č. ' . $_POST['chi_email_special_number'] . ' - rozesílka ' . $_POST['chi_emaildate-the-email-was-sent'] . ' ' . $_POST['chi_emailtime-the-email-was-sent'];
+//
+//							$subject = sanitize_text_field( $subject_data );
+//
+//							$message = nl2br( 'Dobrý deň,<br><br>Poprosil by som Vás o nastavenie emailu č. <strong>' . $_POST['chi_email_special_number'] . '</strong> pre projekt <strong>' . ucwords( $_POST['chi_email_taxonomy_select'] ) . '</strong> na <strong>' . $_POST['chi_emaildate-the-email-was-sent'] . '</strong> o <strong>' . $_POST['chi_emailtime-the-email-was-sent'] . '</strong>.<br><br>Predmet: <strong>' . get_the_title() . '</strong><br><br>Za skorú odpoveď<br>Ďakujem', true );
+//
+//						}
+//						// chi_email_taxonomy_select
+//						// chi_email_special_number
+//						// chi_emailfor
+//						// chi_emailemail-subject
+//						// chi_emaildate-the-email-was-sent
+//						// chi_emailtime-the-email-was-sent
+//						// chi_emailnotes-on-the-text
+//
+//						switch ( $field['id'] ) {
+//							case 'chi_emailnotes-on-the-text':
+//								if ( isset( $_POST[ $field['id'] ] ) ) {
+//
+//									if ( ! empty( $_POST[ $field['id'] ] ) ) {
+//										break;
+//									}
+//
+//									$author_id = get_current_user_id();
+//
+//									$agent = $_SERVER['HTTP_USER_AGENT'];
+//									$data  = array(
+//											'comment_post_ID'      => $post_id,
+//											'comment_author'       => get_the_author_meta( 'nickname', $author_id ),
+//											'comment_author_email' => get_the_author_meta( 'user_email', $author_id ),
+//											'comment_content'      => $message,
+//											'comment_author_IP'    => get_the_user_ip(),
+//											'comment_agent'        => $agent,
+//											'comment_date'         => date( 'Y-m-d H:i:s' ),
+//											'comment_date_gmt'     => date( 'Y-m-d H:i:s' ),
+//											'comment_approved'     => 1,
+//									);
+//
+//									$comment_id = wp_insert_comment( $data );
+//									add_comment_meta( $comment_id, 'subject', $subject );
+//
+//								}
+//								break;
+//							default:
+//								$user = wp_get_current_user();
+//								if ( ! ( in_array( 'administrator', (array) $user->roles ) ) ) {
+//									break;
+//								}
+//								update_post_meta( $post_id, $field['id'], $sanitized );
+//								break;
+//
+//						}
+//					}
+//				}
+//				if ( $_POST['chi_emailchoose-option'] == '3' ) {
+//					foreach ( $this->config['fields'] as $field ) {
+//
+//						$sanitized = sanitize_text_field( $_POST[ $field['id'] ] );
+//
+//						if ( isset( $_POST['chi_emailfor'] ) &&
+//							 isset( $_POST['chi_emailemail-subject'] ) &&
+//							 isset( $_POST['chi_emailnotes-on-the-text'] ) ) {
+//
+//
+//							$subject = sanitize_text_field( $_POST['chi_emailemail-subject'] );
+//							$message = sanitize_text_field( $_POST['chi_emailnotes-on-the-text'] );
+//
+//						}
+//
+//						switch ( $field['id'] ) {
+//							case 'chi_emailnotes-on-the-text':
+//								if ( isset( $_POST[ $field['id'] ] ) ) {
+//
+//									if ( empty( $_POST[ $field['id'] ] ) ) {
+//										break;
+//									}
+//
+//									$author_id = get_current_user_id();
+//
+//									$agent = $_SERVER['HTTP_USER_AGENT'];
+//									$data  = array(
+//											'comment_post_ID'      => $post_id,
+//											'comment_author'       => get_the_author_meta( 'nickname', $author_id ),
+//											'comment_author_email' => get_the_author_meta( 'user_email', $author_id ),
+//											'comment_content'      => $message,
+//											'comment_author_IP'    => get_the_user_ip(),
+//											'comment_agent'        => $agent,
+//											'comment_date'         => date( 'Y-m-d H:i:s' ),
+//											'comment_date_gmt'     => date( 'Y-m-d H:i:s' ),
+//											'comment_approved'     => 1,
+//									);
+//
+//									$comment_id = wp_insert_comment( $data );
+//									add_comment_meta( $comment_id, 'subject', $subject );
+//
+//								}
+//								break;
+//							default:
+//								$user = wp_get_current_user();
+//								if ( ! ( in_array( 'administrator', (array) $user->roles ) ) ) {
+//									break;
+//								}
+//								update_post_meta( $post_id, $field['id'], $sanitized );
+//								break;
+//
+//						}
+//					}
+//				}
 
-							$subject = sanitize_text_field( $subject_data );
-
-							$message = nl2br( 'Dobrý deň,<br><br>Poprosil by som Vás o nastavenie emailu č. <strong>' . $_POST['chi_email_special_number'] . '</strong> pre projekt <strong>' . ucwords( $_POST['chi_email_taxonomy_select'] ) . '</strong> na <strong>' . $_POST['chi_emaildate-the-email-was-sent'] . '</strong> o <strong>' . $_POST['chi_emailtime-the-email-was-sent'] . '</strong>.<br><br>Predmet: <strong>' . get_the_title() . '</strong><br><br>Za skorú odpoveď<br>Ďakujem', true );
-
-						}
-						// chi_email_taxonomy_select
-						// chi_email_special_number
-						// chi_emailfor
-						// chi_emailemail-subject
-						// chi_emaildate-the-email-was-sent
-						// chi_emailtime-the-email-was-sent
-						// chi_emailnotes-on-the-text
-
-						switch ( $field['id'] ) {
-							case 'chi_emailnotes-on-the-text':
-								if ( isset( $_POST[ $field['id'] ] ) ) {
-
-									if ( ! empty( $_POST[ $field['id'] ] ) ) {
-										break;
-									}
-
-									$author_id = get_current_user_id();
-
-									$agent = $_SERVER['HTTP_USER_AGENT'];
-									$data  = array(
-											'comment_post_ID'      => $post_id,
-											'comment_author'       => get_the_author_meta( 'nickname', $author_id ),
-											'comment_author_email' => get_the_author_meta( 'user_email', $author_id ),
-											'comment_content'      => $message,
-											'comment_author_IP'    => get_the_user_ip(),
-											'comment_agent'        => $agent,
-											'comment_date'         => date( 'Y-m-d H:i:s' ),
-											'comment_date_gmt'     => date( 'Y-m-d H:i:s' ),
-											'comment_approved'     => 1,
-									);
-
-									$comment_id = wp_insert_comment( $data );
-									add_comment_meta( $comment_id, 'subject', $subject );
-
-								}
-								break;
-							default:
-								$user = wp_get_current_user();
-								if ( ! ( in_array( 'administrator', (array) $user->roles ) ) ) {
-									break;
-								}
-								update_post_meta( $post_id, $field['id'], $sanitized );
-								break;
-
-						}
-					}
-				}
-				if ( $_POST['chi_emailchoose-option'] == '3' ) {
-					foreach ( $this->config['fields'] as $field ) {
-
-						$sanitized = sanitize_text_field( $_POST[ $field['id'] ] );
-
-						if ( isset( $_POST['chi_emailfor'] ) &&
-							 isset( $_POST['chi_emailemail-subject'] ) &&
-							 isset( $_POST['chi_emailnotes-on-the-text'] ) ) {
-
-
-							$subject = sanitize_text_field( $_POST['chi_emailemail-subject'] );
-							$message = sanitize_text_field( $_POST['chi_emailnotes-on-the-text'] );
-
-						}
-
-						switch ( $field['id'] ) {
-							case 'chi_emailnotes-on-the-text':
-								if ( isset( $_POST[ $field['id'] ] ) ) {
-
-									if ( empty( $_POST[ $field['id'] ] ) ) {
-										break;
-									}
-
-									$author_id = get_current_user_id();
-
-									$agent = $_SERVER['HTTP_USER_AGENT'];
-									$data  = array(
-											'comment_post_ID'      => $post_id,
-											'comment_author'       => get_the_author_meta( 'nickname', $author_id ),
-											'comment_author_email' => get_the_author_meta( 'user_email', $author_id ),
-											'comment_content'      => $message,
-											'comment_author_IP'    => get_the_user_ip(),
-											'comment_agent'        => $agent,
-											'comment_date'         => date( 'Y-m-d H:i:s' ),
-											'comment_date_gmt'     => date( 'Y-m-d H:i:s' ),
-											'comment_approved'     => 1,
-									);
-
-									$comment_id = wp_insert_comment( $data );
-									add_comment_meta( $comment_id, 'subject', $subject );
-
-								}
-								break;
-							default:
-								$user = wp_get_current_user();
-								if ( ! ( in_array( 'administrator', (array) $user->roles ) ) ) {
-									break;
-								}
-								update_post_meta( $post_id, $field['id'], $sanitized );
-								break;
-
-						}
-					}
-				}
 			}
 		}
 
@@ -281,7 +296,7 @@
 								$trash_url = $trash_url = esc_url( "comment.php?action=trashcomment&p=$comment->comment_post_ID&c=$comment->comment_ID&$del_nonce&reason=1" );
 							?>
 							<a href="<?php echo $trash_url ?>"
-							   onclick="return confirm('Are you sure?')" class="delete_note" role="button">Delete
+							   class="delete_note" role="button">Delete
 								note</a>
 						</p>
 					</li>
@@ -312,33 +327,12 @@
 						</select>
 						<input id="publishComment" class="button-primary" type="submit" value="Send" accesskey="p"
 							   tabindex="5"
-							   name="Send">
+							   name="Send" data-id="<?php the_ID(); ?>">
 						<span class="spinner"></span>
 					</td>
 				</tr>
 				</tbody>
 			</table>
-			<script>
-				(function ($) {
-					console.log("ready");
-
-					$('#publishComment').on('click', function (e) {
-						e.preventDefault();
-						console.log("click");
-						$.post(
-								ajaxurl,
-								{
-									'action': 'add_myfunc',
-									'data': 'foobarid',
-								},
-								function (response) {
-
-									console.log(response);
-								}
-						);
-					});
-				})(jQuery);
-			</script>
 			<?php
 		}
 
@@ -401,8 +395,14 @@
 		}
 
 		private function value( $field ) {
+
 			global $post;
-			if ( metadata_exists( 'post', $post->ID, $field['id'] ) ) {
+			$user     = wp_get_current_user();
+			$meta_key = $field['id'] . '_user_' . $user->ID;
+
+			if ( metadata_exists( 'post', $post->ID, $meta_key ) ) {
+				$value = get_post_meta( $post->ID, $meta_key, true );
+			} elseif ( metadata_exists( 'post', $post->ID, $field['id'] ) ) {
 				$value = get_post_meta( $post->ID, $field['id'], true );
 			} else if ( isset( $field['default'] ) ) {
 				$value = $field['default'];
@@ -414,18 +414,115 @@
 		}
 
 		public function example_ajax_request() {
+
 			// The $_REQUEST contains all the data sent via AJAX from the Javascript call
-			if ( isset($_REQUEST) ) {
+			if ( isset( $_REQUEST ) ) {
 
-				$fruit = $_REQUEST['fruit'];
+				$data = $_REQUEST['data'];
 
-				// This bit is going to process our fruit variable into an Apple
-				if ( $fruit == 'Banana' ) {
-					$fruit = 'Apple';
+				switch ( $data['option'] ) {
+					case 1:
+						$sanitized = sanitize_text_field( $data['noteText'] );
+
+						$author_id = get_current_user_id();
+
+						$data[] = get_the_author_meta( 'nickname', $author_id );
+
+						$agent = $_SERVER['HTTP_USER_AGENT'];
+						$data  = array(
+								'comment_post_ID'      => $_REQUEST['post_id'],
+								'comment_author'       => get_the_author_meta( 'nickname', $author_id ),
+								'comment_author_email' => get_the_author_meta( 'user_email', $author_id ),
+								'comment_content'      => $sanitized,
+								'comment_author_IP'    => get_the_user_ip(),
+								'comment_agent'        => $agent,
+								'comment_date'         => date( 'Y-m-d H:i:s' ),
+								'comment_date_gmt'     => date( 'Y-m-d H:i:s' ),
+								'comment_approved'     => 1,
+						);
+
+						$comment_id = wp_insert_comment( $data );
+
+						if ( $comment_id ) {
+							$meta_key = 'chi_emailnotes-on-the-text_user_' . $author_id;
+							delete_post_meta( $_REQUEST['post_id'], $meta_key );
+						}
+
+						$data['comment_id'] = $comment_id;
+
+						echo json_encode( $data );
+						break;
+					case 2:
+						if ( ! isset( $data["taxonomuSelect"] ) or
+							 ! isset( $data["specialNumber"] ) or
+							 ! isset( $data["noteDate"] ) or
+							 ! isset( $data["noteTime"] ) or
+							 ! isset( $data["postTitle"] ) or
+							 ( $data["postTitle"] == "" ) or
+							 ( $data["specialNumber"] == "" ) or
+							 ( $data["noteDate"] == "" ) or
+							 ( $data["noteTime"] == "" ) or
+							 ( $data["postTitle"] == "" )
+						)
+						{
+							break;
+						}
+						$subject_data = '' . ucfirst( $data["taxonomuSelect"] ) . ' - Newsletter č. ' . $data['specialNumber'] . ' - rozesílka ' . $data['noteDate'] . ' ' . $data['noteTime'];
+						$email_text   = 'Dobrý deň,<br><br>
+							Poprosil by som Vás o nastavenie emailu č. <strong>' . $data["specialNumber"] . '</strong> pre projekt
+							<strong>' . $data["taxonomuSelect"] . '</strong> na <strong>' . $data["noteDate"] . '</strong> o <strong>' . $data["noteTime"] . 'h.</strong><br><br>
+							Predmet: <strong>' . $data["postTitle"] . '</strong><br><br>
+							Za skorú odpoveď<br>
+							Ďakujem';
+
+						$author_id = get_current_user_id();
+
+						$data[] = get_the_author_meta( 'nickname', $author_id );
+
+						$agent = $_SERVER['HTTP_USER_AGENT'];
+						$data  = array(
+								'comment_post_ID'      => $_REQUEST['post_id'],
+								'comment_author'       => get_the_author_meta( 'nickname', $author_id ),
+								'comment_author_email' => get_the_author_meta( 'user_email', $author_id ),
+								'comment_content'      => $email_text,
+								'comment_author_IP'    => get_the_user_ip(),
+								'comment_agent'        => $agent,
+								'comment_date'         => date( 'Y-m-d H:i:s' ),
+								'comment_date_gmt'     => date( 'Y-m-d H:i:s' ),
+								'comment_approved'     => 1,
+						);
+
+
+						$data['subject_data'] = $subject_data;
+						$subject              = sanitize_text_field( $subject_data );
+
+						$comment_id = wp_insert_comment( $data );
+						if ( $comment_id ) {
+							add_comment_meta( $comment_id, 'subject', $subject );
+						}
+
+						$data['comment_id'] = $comment_id;
+
+						echo json_encode( $data );
+						break;
 				}
+			}
+			// Always die in functions echoing AJAX content
+			wp_die();
+		}
 
-				// Now let's return the result to the Javascript function (The Callback)
-				echo $fruit;
+		public function delete_comment_ajax_request() {
+
+			// The $_REQUEST contains all the data sent via AJAX from the Javascript call
+			if ( isset( $_REQUEST ) ) {
+				$comment_url    = $_REQUEST['comment_id'];
+				$url_components = parse_url( $comment_url );
+				parse_str( $url_components['query'], $params );
+
+				$is_comment_deleted = wp_delete_comment( $params['c'] );
+				if ( $is_comment_deleted ) {
+					delete_comment_meta( $params['c'], 'subject' );
+				}
 			}
 
 			// Always die in functions echoing AJAX content
