@@ -1,9 +1,5 @@
 (function ($) {
 
-	function deleteNote() {
-		return confirm('Do you really want to submit the form?');
-	}
-
 	$(function () {
 		// Code goes here
 		function nodeChangeLog() {
@@ -38,8 +34,6 @@
 		$('#chi_emailchoose-option').on('change', function () {
 			nodeChangeLog();
 		});
-
-
 		var btn = $('#publishComment');
 
 		btn.on('click', function (e) {
@@ -56,33 +50,30 @@
 			$('.spinner').addClass('is-active');
 			e.preventDefault();
 
+			console.log(noteText.val());
+			console.log(option);
+
 			var data = [];
 			data["option"] = option;
 
 			switch (option) {
 				case '1':
 					// code block
-					if (isEmpty(noteText)) {
-						console.log(noteText.val());
-						data["noteText"] = noteText.val();
-					} else {
-
-					}
 					if (noteText.val() == "" || noteText.val() == " ") {
 						console.log('empty')
 						$('.spinner').removeClass('is-active');
 						return;
 					}
+					data["noteText"] = noteText.val();
 					break;
 				case '2':
 					if (
-						isEmpty(noteText) ||
-						isEmpty(noteDate) ||
-						isEmpty(noteTime) ||
-						isEmpty(postTitle) ||
-						isEmpty(specialNumber) ||
-						isEmpty(taxonomuSelect)
-					){
+						noteDate.val() == "" ||
+						noteTime.val() == "" ||
+						postTitle.val() == "" ||
+						specialNumber.val() == "" ||
+						taxonomuSelect.val() == ""
+					) {
 						$('.spinner').removeClass('is-active');
 						break;
 					}
@@ -145,9 +136,9 @@
 							$('ul.order_notes').prepend('<li rel="" class="note">\n' +
 								'\t\t\t\t\t\t<div class="note_content note_content--info">\n' +
 								'\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<p>Predmet emailu:\n' +
-								'\t\t\t\t\t\t\t\t\t<strong>'+ commentData.subject_data +'</strong>\n' +
+								'\t\t\t\t\t\t\t\t\t<strong>' + commentData.subject_data + '</strong>\n' +
 								'\t\t\t\t\t\t\t\t</p>\n' +
-								'\t\t\t\t\t\t\t\t\t\t\t\t\t\t'+ commentData.comment_content +'\n' +
+								'\t\t\t\t\t\t\t\t\t\t\t\t\t\t' + commentData.comment_content + '\n' +
 								'\t\t\t\t\t\t</div>\n' +
 								'\t\t\t\t\t\t<p class="meta">\n' +
 								'\t\t\t\t\t\t\t<abbr class="exact-date" title="' + commentData.comment_date + '">\n' +
@@ -211,5 +202,9 @@
 				});
 			}
 		});
+
+
 	});
+
 })(jQuery);
+

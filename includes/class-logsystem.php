@@ -18,7 +18,7 @@
 			$this->process_cpts();
 			add_action( 'add_meta_boxes', [ $this, 'add_meta_boxes' ] );
 			add_action( 'admin_head', [ $this, 'admin_head' ] );
-			add_action( 'save_post', [ $this, 'save_post' ] );
+			add_action( 'save_post', [ $this, 'save_post' ], 100 );
 		}
 
 		public function process_cpts() {
@@ -59,6 +59,41 @@
 				return;
 			}
 
+			$chi_email_author_state = get_post_meta( $post_id, 'chi_email_author_state', true );
+
+			if ( $chi_email_author_state == "on" ) {
+
+				if ( get_post_meta( $post_id, 'author_state_was_send', true ) != 1 ) {
+
+					$sanitized = '<strong>Author: has completed the email.</strong>';
+
+					$agent = $_SERVER['HTTP_USER_AGENT'];
+
+					$data = array(
+							'comment_post_ID'      => $post_id,
+							'comment_author'       => 'system',
+							'comment_author_email' => '',
+							'comment_content'      => $sanitized,
+							'comment_author_IP'    => get_the_user_ip(),
+							'comment_agent'        => $agent,
+							'comment_date'         => date( 'Y-m-d H:i:s' ),
+							'comment_date_gmt'     => date( 'Y-m-d H:i:s' ),
+							'comment_approved'     => 1,
+					);
+
+					wp_insert_comment( $data );
+					if ( ! metadata_exists( 'post', $post_id, 'author_state_was_send' ) ) {
+						add_post_meta( $post_id, 'author_state_was_send', 1 );
+					}
+				}
+
+			} else {
+
+				if ( metadata_exists( 'post', $post_id, 'author_state_was_send' ) ) {
+					delete_post_meta( $post_id, 'author_state_was_send' );
+				}
+			}
+
 			if ( isset( $_POST['chi_emailchoose-option'] ) ) {
 				foreach ( $this->config['fields'] as $field ) {
 
@@ -78,7 +113,6 @@
 							break;
 					}
 				}
-
 
 				//				if ( $_POST['chi_emailchoose-option'] == '1' ) {
 //
@@ -277,7 +311,8 @@
 			<ul class="order_notes">
 				<?php foreach ( $comments as $comment ) : ?>
 					<li rel="<?php $comment->comment_ID; ?>" class="note">
-						<div class="note_content <?php echo( get_comment_meta( $comment->comment_ID, 'subject', true ) ? 'note_content--info' : '' ) ?>">
+						<div class="note_content <?php echo( get_comment_meta( $comment->comment_ID, 'subject', true ) ? 'note_content--info' : '' ) ?>
+<?php echo ( $comment->comment_author == "system" ) ? "note_content--system" : "" ?>">
 							<?php if ( get_comment_meta( $comment->comment_ID, 'subject', true ) ) : ?>
 								<p>Predmet emailu:
 									<strong><?php echo get_comment_meta( $comment->comment_ID, 'subject', true ) ?></strong>
@@ -463,8 +498,7 @@
 							 ( $data["noteDate"] == "" ) or
 							 ( $data["noteTime"] == "" ) or
 							 ( $data["postTitle"] == "" )
-						)
-						{
+						) {
 							break;
 						}
 						$subject_data = '' . ucfirst( $data["taxonomuSelect"] ) . ' - Newsletter č. ' . $data['specialNumber'] . ' - rozesílka ' . $data['noteDate'] . ' ' . $data['noteTime'];
@@ -509,6 +543,30 @@
 			}
 			// Always die in functions echoing AJAX content
 			wp_die();
+		}
+
+		public function chi_ajax_all_useres() {
+
+			$request = $_REQUEST['email']['term'];
+
+			if ( $request ) {
+				$users      = get_users();
+				$find_email = [];
+
+				foreach ( $users as $user ) {
+
+					$user_email = get_userdata( $user->ID )->user_email;
+
+					if ( strpos( $user_email, $request ) !== false ) {
+						$find_email[] = $user_email;
+					}
+
+
+				}
+
+				echo json_encode( $find_email );
+			}
+			die();
 		}
 
 		public function delete_comment_ajax_request() {

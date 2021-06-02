@@ -262,7 +262,11 @@
 
 			$this->loader->add_action( 'wp_ajax_example_ajax_request', $email_sender, 'example_ajax_request' );
 
+			$this->loader->add_action( 'wp_ajax_chi_ajax_all_useres', $email_sender, 'chi_ajax_all_useres' );
+
 			$this->loader->add_action( 'wp_ajax_delete_comment_ajax_request', $email_sender, 'delete_comment_ajax_request' );
+
+//			$this->loader->add_action( 'wp_ajax_email_autocomplete_request', $email_sender, 'email_autocomplete_request' );
 
 
 			$this->loader->add_filter( 'the_content', $plugin_post_type, 'content_single_email' );

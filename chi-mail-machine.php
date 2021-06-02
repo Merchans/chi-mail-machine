@@ -168,6 +168,7 @@
 		$orderby = $query->get( 'orderby' );
 
 		if ( 'author_completed' == $orderby ) {
+
 			$query->set( 'meta_key', 'chi_email_author_state' );
 			$query->set( 'orderby', 'meta_value_num' );
 		}

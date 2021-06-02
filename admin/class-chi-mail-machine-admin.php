@@ -99,7 +99,8 @@ class Chi_Mail_Machine_Admin {
 		 * class.
 		 */
 
-		wp_enqueue_script( $this->plugin_name.'_logsystem', plugin_dir_url( __FILE__ ) . 'js/logsystem.js', array( 'jquery'), $this->version, true );
+		wp_enqueue_script( $this->plugin_name.'_logsystem', plugin_dir_url( __FILE__ ) . 'js/logsystem.js', array('jquery'), $this->version, true );
+		wp_enqueue_script( $this->plugin_name.'_autocomplete', plugin_dir_url( __FILE__ ) . 'js/autocomplete.js', array('jquery'), $this->version, true );
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/chi-mail-machine-admin.js', array( 'jquery' ), $this->version, true );
 
 	}

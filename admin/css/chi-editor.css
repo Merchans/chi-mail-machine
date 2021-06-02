@@ -78,6 +78,13 @@ ul.order_notes li a.delete_note {
 	background: #a7cedc!important;
 }
 
+.note_content.note_content--system {
+	background: #d7cad2!important;
+}
+.note_content.note_content--system::after {
+	border-color: #d7cad2 transparent!important;
+}
+
 .spinner {
 	margin: 5px 0px;
 }
