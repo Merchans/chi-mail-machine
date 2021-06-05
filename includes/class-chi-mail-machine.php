@@ -264,6 +264,8 @@
 
 			$this->loader->add_action( 'wp_ajax_chi_ajax_all_useres', $email_sender, 'chi_ajax_all_useres' );
 
+			$this->loader->add_action( 'wp_ajax_save_statistic_url', $email_sender, 'save_statistic_url' );
+
 			$this->loader->add_action( 'wp_ajax_delete_comment_ajax_request', $email_sender, 'delete_comment_ajax_request' );
 
 //			$this->loader->add_action( 'wp_ajax_email_autocomplete_request', $email_sender, 'email_autocomplete_request' );

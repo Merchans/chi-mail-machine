@@ -398,7 +398,7 @@
 
 		private function input( $field ) {
 			printf(
-					'<input class="regular-text %s" id="%s" name="%s" %s type="%s" value="%s">',
+					'<input class="regular-text %s" id="%s" name="%s" %s type="%s" value="%s" autocomplete="off">',
 					isset( $field['class'] ) ? $field['class'] : '',
 					$field['id'], $field['id'],
 					isset( $field['pattern'] ) ? "pattern='{$field['pattern']}'" : '',
@@ -409,7 +409,7 @@
 
 		private function input_minmax( $field ) {
 			printf(
-					'<input class="regular-text" id="%s" %s %s name="%s" %s type="%s" value="%s">',
+					'<input class="regular-text" id="%s" %s %s name="%s" %s type="%s" value="%s" autocomplete="off">',
 					$field['id'],
 					isset( $field['max'] ) ? "max='{$field['max']}'" : '',
 					isset( $field['min'] ) ? "min='{$field['min']}'" : '',
@@ -586,6 +586,50 @@
 			// Always die in functions echoing AJAX content
 			die();
 		}
+
+
+		public function save_statistic_url() {
+			$post_id   = $_REQUEST['post_id'];
+			$input_val = $_REQUEST['input_val'];
+			if ( $post_id ) {
+				if ( filter_var( $input_val, FILTER_VALIDATE_URL ) === false ) {
+					echo  'Not a valid URL';
+					die( );
+				}
+				update_post_meta( $post_id, 'statistic_url', $input_val );
+
+				$curl = curl_init();
+
+				curl_setopt( $curl, CURLOPT_URL, $input_val );
+				curl_setopt( $curl, CURLOPT_SSL_VERIFYPEER, $input_val );
+				curl_setopt( $curl, CURLOPT_RETURNTRANSFER, $input_val );
+
+				$result = curl_exec( $curl );
+
+				preg_match_all( '/<table.*?>(.*?)<\/table>/si', $result, $matches );
+
+				$sentences = $matches[1];
+
+				$list = array();
+				for ( $i = 0; $i < 1; $i ++ ) {
+					$sentence = strip_tags( $sentences[ $i ], '<table><tbody><td><tr>' );
+					preg_match_all( '/\d+\.?\d*/', $sentence, $matches );
+					$list[] = $matches;
+				}
+				$all_respondents = $list[0][0][2];
+				$all_open_email  = $list[0][0][3];
+				$all_web_opens   = $list[0][0][4];
+
+				update_post_meta( $post_id, 'all_respondents', $all_respondents );
+				update_post_meta( $post_id, 'all_open_email', $all_open_email );
+				update_post_meta( $post_id, 'all_web_opens', $all_web_opens );
+
+				echo "R: " . $all_respondents . " E: " . $all_open_email . " W: " . $all_web_opens . "";
+
+			}
+			die();
+		}
+
 
 	}
 

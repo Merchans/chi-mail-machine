@@ -436,51 +436,6 @@ Nepřejete-li si dostávat tyto e-maily, klikněte prosím ZDE.',
 				),
 			) );
 
-
-			$metabox_ad_section_email = new_cmb2_box( array(
-				'id'           => $prefix . '_sender',
-				'title'        => __( 'Email Sender', 'chi-mail-machine' ),
-				'object_types' => array( 'chi_email' ),
-				'context'      => 'normal',
-				'priority'     => 'low',
-			) );
-
-			$metabox_ad_section_email->add_field( array(
-				'name' => __( 'Date the email was sent', 'chi-mail-machine' ),
-				'id'   => $prefix . '_date_sent',
-				'type' => 'text_datetime_timestamp',
-			) );
-
-			//Urologům CZ - Newsletter č. 61 - rozesílka 16.3.2021 11:30
-
-			$metabox_ad_section_email->add_field( array(
-				'name'    => __( 'Email Subject', 'chi-mail-machine' ),
-				'desc'    => __( 'Subject is one of the first things the recipient of the message reads.', 'chi-mail-machine' ),
-				'default' => 'standard value (optional)',
-				'id'      => $prefix . '_subjet',
-				'type'    => 'text',
-			) );
-
-			$metabox_ad_section_email->add_field( array(
-				'name'    => __( 'Email massage', 'chi-mail-machine' ),
-				'id'      => $prefix . '_massage_textarea',
-				'type'    => 'textarea',
-				'default' => '',
-				'options' => array(
-					'tooltip-class' => 'fa-info-circle',
-					'tooltip'       => 'This is info about this setting or field',
-				),
-			) );
-
-			$metabox_ad_section_email->add_field( array(
-				'name' => 'Test Checkbox',
-				'desc' => 'field description (optional)',
-				'id'   => 'wiki_test_checkbox',
-				'type' => 'checkbox',
-				'default_cb'   => [ $this, 'yourprefix_theme_options_page_output' ],
-
-			) );
-
 		}
 
 		public function cmb_show_meta_to_chosen_roles( $cmb ) {

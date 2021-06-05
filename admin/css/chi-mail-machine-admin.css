@@ -47,3 +47,10 @@
 #side-sortables .cmb2-wrap label, .inner-sidebar .cmb2-wrap label {
 	font-weight: normal;
 }
+input.statistic-url {
+	width: 90px;
+}
+.statistic-wrap {
+	padding-top: 5px;
+}
+

@@ -26,6 +26,7 @@
 		//		//OR
 		//		echo stream_get_contents( fopen( $page, "rb" ) ); //you may use "r" instead of "rb"  //needs "Allow_url_fopen" enabled
 
+
 		$curl = curl_init();
 
 		curl_setopt( $curl, CURLOPT_URL, $page );
@@ -35,25 +36,20 @@
 		$result = curl_exec( $curl );
 
 		preg_match_all( '/<table.*?>(.*?)<\/table>/si', $result, $matches );
-		//		preg_match_all('\d+', $result, $matches);
 
 		$sentences = $matches[1];
-		unset($matches);
+
 		$list      = array();
-		foreach ($sentences as $sentence ) {
-			$sentence = strip_tags($sentence, '<table><tbody><td><tr>');
-			echo '<pre>';
-			print_r( $sentence );
-			echo '</pre>';
+		for ( $i = 0; $i < 1; $i++ )
+		{
+			$sentence = strip_tags($sentences[$i], '<table><tbody><td><tr>');
 			preg_match_all( '/\d+\.?\d*/', $sentence, $matches );
 			$list[] = $matches;
 		}
-
+	
 		echo '<pre>';
 		print_r( $list );
 		echo '</pre>';
-
-
 	?>
 </div>
 <?php get_footer(); ?>

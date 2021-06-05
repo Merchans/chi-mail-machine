@@ -113,9 +113,10 @@
 		// Remove Date
 		unset( $columns['date'] );
 
-		$columns["author_completed"] = __( "Author: has completed the email", "chi-mail-machine" );
-		$columns["editor_completed"] = __( "Editor: has completed the email", "chi-mail-machine" );
-		$columns["admin_completed"]  = __( "Admin: sended the email", "chi-mail-machine" );
+		$columns["author_completed"]           = __( "Author: has completed the email", "chi-mail-machine" );
+		$columns["editor_completed"]           = __( "Editor: has completed the email", "chi-mail-machine" );
+		$columns["admin_completed"]            = __( "Admin: sended the email", "chi-mail-machine" );
+		$columns["externalcompany_statistics"] = __( "Statistics", "chi-mail-machine" );
 
 		$columns['date'] = __( "Published on the web", "chi-mail-machine" );
 
@@ -142,6 +143,24 @@
 			?>
 			<input type="checkbox"
 				   disabled <?php echo get_post_meta( $post_id, 'chi_email_admin_state', true ) == 'on' ? 'checked' : '' ?> >
+			<?php
+		}
+		if ( $column == "externalcompany_statistics" ) {
+			?>
+			<input class="statistic-url" type="url" id="text-area-for-statistics-<?php echo $post_id; ?>"
+				   value="<?php echo $statistic_url = get_post_meta( $post_id, 'statistic_url' ) ? get_post_meta( $post_id, 'statistic_url', true ) : '' ?>">
+
+			<input id="add-statistics-<?php echo $post_id; ?>" data-postid="<?php echo $post_id; ?>"
+				   class="statistic-btn button-primary" type="submit" value="Add">
+			<span class="spinner"></span>
+			<div class="statistic-wrap">
+				<?php if ( get_post_meta( $post_id, 'all_respondents', true ) && get_post_meta( $post_id, 'all_open_email', true ) &&  get_post_meta( $post_id, 'all_web_opens', true ) ) : ?>
+					<span class="statistic-info">R: <?php echo get_post_meta( $post_id, 'all_respondents', true ) ?> E: <?php echo get_post_meta( $post_id, 'all_open_email', true ) ?> W: <?php echo get_post_meta( $post_id, 'all_web_opens', true )  ?>&nbsp;</span>
+				<?php else : ?>
+					<span class="statistic-info">R: X E: X W: X&nbsp;</span>
+				<?php endif ?>
+
+			</div>
 			<?php
 		}
 	}
@@ -338,7 +357,7 @@
 							// NOTE: "name" and "value" are the array keys. This is important. I use int(1) for the value to make sure we don't get a string server-side.
 							data.push({name: 'save_post_ajax', value: 1})
 
-						// Replaces wp.autosave.initialCompareString
+							// Replaces wp.autosave.initialCompareString
 							var ajax_updated = false
 
 							/**
@@ -350,7 +369,7 @@
 							 *     when called from wp-includes/js/autosave.js
 							 * wp.autosave.initialCompareString = wp.autosave.getCompareString();
 							 */
-						$(window).unbind('beforeunload.edit-post')
+							$(window).unbind('beforeunload.edit-post')
 							$(window).on('beforeunload.edit-post', function () {
 								var editor = typeof tinymce !== 'undefined' && tinymce.get('content')
 
@@ -401,4 +420,3 @@
 
 //	add_action( 'admin_footer-post.php', 'my_post_type_xhr', 999 );
 //	add_action( 'admin_footer-post-new.php', 'my_post_type_xhr', 999 );
-
