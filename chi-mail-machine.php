@@ -417,6 +417,18 @@
 			<?php
 		}
 	}
+	add_filter( 'allowed_block_types', 'misha_allowed_block_types' );
+
+	function misha_allowed_block_types( $allowed_blocks ) {
+
+		return array(
+				'core/image',
+				'core/paragraph',
+				'core/heading',
+				'core/list'
+		);
+
+	}
 
 //	add_action( 'admin_footer-post.php', 'my_post_type_xhr', 999 );
 //	add_action( 'admin_footer-post-new.php', 'my_post_type_xhr', 999 );

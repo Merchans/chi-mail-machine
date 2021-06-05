@@ -2,15 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e90737f4-dedb-400e-8fa8-754272e7e2b7" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/intellij-latte/xmlSources/Latte.dtd" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/intellij-latte/xmlSources/Latte.dtd" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/intellij-latte/xmlSources/Latte.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/intellij-latte/xmlSources/Latte.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/includes/class-chi-mail-machine-shortcodes.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/admin/css/chi-mail-machine-admin.css" beforeDir="false" afterPath="$PROJECT_DIR$/admin/css/chi-mail-machine-admin.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/admin/js/chi-mail-machine-admin.js" beforeDir="false" afterPath="$PROJECT_DIR$/admin/js/chi-mail-machine-admin.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/css/chi-editor.css" beforeDir="false" afterPath="$PROJECT_DIR$/admin/css/chi-editor.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/chi-mail-machine.php" beforeDir="false" afterPath="$PROJECT_DIR$/chi-mail-machine.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/includes/class-chi-mail-machine-email-post-type.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/class-chi-mail-machine-email-post-type.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/includes/class-chi-mail-machine.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/class-chi-mail-machine.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/includes/class-logsystem.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/class-logsystem.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/single-chi_email.php" beforeDir="false" afterPath="$PROJECT_DIR$/templates/single-chi_email.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/vendor/cmb2-field-post-search-ajax" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/cmb2-field-post-search-ajax" afterDir="false" />
     </list>
@@ -154,7 +150,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/includes" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="options.lastSelected" value="configurable.group.appearance" />
     <property name="options.splitter.details.proportions" value="0.2" />
@@ -163,6 +159,9 @@
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/includes" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src" />
       <recent name="$PROJECT_DIR$/templates" />
@@ -194,7 +193,7 @@
       <workItem from="1621844204129" duration="1751000" />
       <workItem from="1622555359836" duration="24988000" />
       <workItem from="1622793244626" duration="13674000" />
-      <workItem from="1622873228676" duration="169000" />
+      <workItem from="1622873228676" duration="7456000" />
     </task>
     <servers />
   </component>

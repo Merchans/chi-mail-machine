@@ -80,6 +80,8 @@
 			$this->define_public_hooks();
 			$this->define_post_type_hooks();
 
+			$this->define_shortcode_hooks();
+
 		}
 
 		/**
@@ -137,6 +139,7 @@
 
 			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/functions.php';
 
+			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-chi-mail-machine-shortcodes.php';
 			/**
 			 * The class responsible for all Meta Box throw plugin. CMB2 init for meta box
 			 */
@@ -149,6 +152,7 @@
 			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'vendor/cmb2-field-ajax-search/cmb2-field-ajax-search.php';
 
 			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'vendor/cmb2-term-select/cmb2-term-select.php';
+
 
 			$this->loader = new Chi_Mail_Machine_Loader();
 
@@ -285,4 +289,26 @@
 
 		}
 
+		/**
+		 * Define all shortcodes for this plugin
+		 *
+		 * @return    Chi_Mail_Machine_Loader    Orchestrates the hooks of the plugin.
+		 * @since     1.0.0
+		 */
+		public function define_shortcode_hooks() {
+
+			$plugin_shortcodes = new Chi_Mail_Machine_Shortcodes(
+				$this->get_plugin_name(),
+				$this->get_version(),
+			);
+			/**
+			 * Adding shortcode
+			 *
+			 * @return    Chi_Mail_Machine_Loader    Orchestrates the hooks of the plugin.
+			 * @since     1.0.0
+			 */
+			add_shortcode( 'article', array( $plugin_shortcodes, 'make_link' ) );
+
+
+		}
 	}
