@@ -1,0 +1,35 @@
+{
+  "name": "blocks",
+  "version": "1.0.0",
+  "description": "",
+  "main": "block.js",
+  "scripts": {
+	"build": "cross-env BABEL_ENV=default BABEL_ENV=production webpack",
+	"dev": "cross-env BABEL_ENV=default BABEL_ENV=production webpack --watch"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+	"@babel/core": "^7.14.3",
+	"@babel/plugin-syntax-jsx": "^7.12.13",
+	"@babel/preset-env": "^7.14.4",
+	"@babel/preset-react": "^7.13.13",
+	"babel-core": "^6.26.3",
+	"babel-loader": "^8.2.2",
+	"babel-plugin-transform-react-jsx": "^6.24.1",
+	"babel-preset-env": "^1.7.0",
+	"cross-env": "^7.0.3",
+	"install": "^0.13.0",
+	"npm": "^7.16.0",
+	"webpack": "^5.38.1",
+	"webpack-cli": "^4.7.0"
+  },
+  "bable": {
+	"presets": [
+	  "@babel/preset-env"
+	],
+	"plugins": [
+	  "@babel/plugin-syntax-jsx"
+	]
+  }
+}

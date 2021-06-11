@@ -1,0 +1,1 @@
+(()=>{const{__:i}=window.wp.i18n,{registerBlockType:l}=window.wp.blocks;l("chi-mail-machine/blocks",{title:i("Firsr Block"),icon:"block-default",category:"layout",edit:i=>"pl",save:()=>"l,"})})();
