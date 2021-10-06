@@ -7,7 +7,7 @@
 	 * @since      1.0.0
 	 *
 	 * @package    Chi_Mail_Machine
-	 * @subpackage Chi_Mail_Machine_Shortcodes/includes
+	 * @subpackage Chi_Mail_Machine_Users/includes
 	 */
 
 	/**
@@ -20,10 +20,10 @@
 	 *
 	 * @since      1.0.0
 	 * @package    Chi_Mail_Machine
-	 * @subpackage Chi_Mail_Machine_Shortcodes/includes
+	 * @subpackage Chi_Mail_Machine_Users/includes
 	 * @author     Richard Markovič <addmarkovic@gmail.com>
 	 */
-	class Chi_Mail_Machine_Shortcodes {
+	class Chi_Mail_Machine_Users {
 
 
 		/**
@@ -53,33 +53,63 @@
 		}
 
 		/**
-		 * Make a corecrt link for statistics
-		 * Usage: [article id="xXx"]
-		 * https://www.kongres-online.cz/respironews/komu-a-kdy-indikovat-monoklonalni-protilatky-v-lecbe-covid-19/?utm_source=email&utm_campaign=respironews&utm_medium=email33&utm_content=komu-a-kdy-indikovat-monoklonalni-protilatky-v-lecbe-covid-19/&external_id=zdedoplnitID
+		 * Make a new WP custom role
 		 */
-		public function make_link( $atts, $content ) {
+		public function remove_specifc_postype_for_external_worker() {
+			$user = wp_get_current_user();
 
-			if ( ! is_numeric( $atts['id'] ) ) {
-				return "ID must by a number: [article id='NUMBER']";
+			if ( $user->roles[0] === 'contributor' ) {
+
+				remove_menu_page( 'index.php' );
+				remove_submenu_page( 'index.php', 'update-core.php' );
+
+
+				remove_menu_page( 'edit.php' );
+				remove_menu_page( 'edit.php?post_type=page' );
+				remove_menu_page( 'edit.php?post_type=chi_video' );
+				remove_menu_page( 'edit.php?post_type=chi_inzerce' );
+				remove_menu_page( 'edit.php?post_type=chi_email_ad' );
+
+				remove_menu_page( 'questionnaire-manager' );
+
+				remove_submenu_page( 'admin.php', '?page=automat-nbsp' );
+
+				remove_menu_page( 'edit.php?post_type=chi_doctor' );
+
+				remove_menu_page( 'tools.php' );
+				remove_menu_page( 'edit-comments.php' );
+				remove_menu_page( 'profile.php' );
+				remove_menu_page( 'admin.php?page=automat-nbsp' );
+
+				global $submenu;
+
+				unset( $submenu['questionnaire-manager'] ); //remove top level menu index.php (dashboard menu - Home menu )
+				unset( $submenu['edit.php?post_type=chi_email'][10] );
+
 			}
-			$special_number = get_post_meta( get_the_ID(), 'chi_email_special_number', true );
-			$url            = get_permalink( get_post_meta( get_the_ID(), 'chi_email_search_ajax_multiple', true )[ ( $atts['id'] - 1 ) ] );
+		}
 
-			$parts = explode( "/", $url );
+		public function redirect() {
+			$user = wp_get_current_user();
+			global $pagenow, $typenow;
 
-			foreach ( $parts as $key => $value ) {
-				if ( empty( $value ) ) {
-					unset( $parts[ $key ] );
+			if ( isset( $user->roles[0] ) && $user->roles[0] === 'contributor' ) {
+				if ( $pagenow != "edit.php" && $typenow != "chi_email" ) {
+					$admin_url = get_admin_url() . 'edit.php?post_type=chi_email';
+					wp_redirect( $admin_url );
 				}
 			}
+		}
 
-			$slug    = $parts[ count( $parts ) ];
-			$special = get_the_terms( get_the_ID(), 'category' )[0]->slug;
+		public function change_role_name() {
+			global $wp_roles;
 
+			if ( ! isset( $wp_roles ) ) {
+				$wp_roles = new WP_Roles();
+			}
 
-			$link = "$url?utm_source=email&utm_campaign=respironews&utm_medium=email$special_number&utm_content=$slug&external_id=zdedoplnitID";
-
-			return "<a href='$link'>" . $content . "</a>";
+			$wp_roles->roles['contributor']['name'] = 'External Worker';
+			$wp_roles->role_names['contributor']    = 'External Worker';
 		}
 
 	}

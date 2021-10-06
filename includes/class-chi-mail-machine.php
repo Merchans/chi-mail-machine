@@ -81,6 +81,8 @@
 			$this->define_post_type_hooks();
 
 			$this->define_shortcode_hooks();
+			$this->define_user_hooks();
+
 
 		}
 
@@ -140,6 +142,10 @@
 			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/functions.php';
 
 			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-chi-mail-machine-shortcodes.php';
+
+			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-chi-mail-machine-blocks.php';
+
+			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-chi-mail-machine-users.php';
 			/**
 			 * The class responsible for all Meta Box throw plugin. CMB2 init for meta box
 			 */
@@ -255,10 +261,18 @@
 		 */
 		public function define_post_type_hooks() {
 
-			$plugin_post_type          = new Chi_Mail_Machine_Email_Post_Type( $this->get_plugin_name(), $this->get_version() );
-			$plugin_post_type_email_ad = new Chi_Mail_Machine_Email_Ad_Post_Type( $this->get_plugin_name(), $this->get_version() );
+			$plugin_post_type          = new Chi_Mail_Machine_Email_Post_Type( $this->get_plugin_name(),
+				$this->get_version() );
+			$plugin_post_type_email_ad = new Chi_Mail_Machine_Email_Ad_Post_Type( $this->get_plugin_name(),
+				$this->get_version() );
 			$email_sender              = new CHI_EMAIL_SENDER;
 
+			$plugin_blocks = new Chi_Mail_Machine_Blocks(
+				$this->get_plugin_name(),
+				$this->get_version(),
+			);
+
+			// ACTION SECTION
 			$this->loader->add_action( 'init', $plugin_post_type, 'init' );
 
 			$this->loader->add_action( 'init', $plugin_post_type_email_ad, 'init' );
@@ -270,11 +284,13 @@
 
 			$this->loader->add_action( 'wp_ajax_save_statistic_url', $email_sender, 'save_statistic_url' );
 
-			$this->loader->add_action( 'wp_ajax_delete_comment_ajax_request', $email_sender, 'delete_comment_ajax_request' );
+			$this->loader->add_action( 'wp_ajax_delete_comment_ajax_request', $email_sender,
+				'delete_comment_ajax_request' );
 
-//			$this->loader->add_action( 'wp_ajax_email_autocomplete_request', $email_sender, 'email_autocomplete_request' );
+			$this->loader->add_action( 'enqueue_block_editor_assets', $plugin_blocks, 'block_activation' );
 
 
+			// FILTER SECTION
 			$this->loader->add_filter( 'the_content', $plugin_post_type, 'content_single_email' );
 
 			$this->loader->add_filter( 'single_template', $plugin_post_type, 'single_template_email' );
@@ -311,4 +327,21 @@
 
 
 		}
+
+		/**
+		 * Register new User Role
+		 */
+		public function define_user_hooks() {
+
+			$plugin_users = new Chi_Mail_Machine_Users(
+				$this->get_plugin_name(),
+				$this->get_version(),
+			);
+
+
+			add_action( 'admin_init', array( $plugin_users, 'change_role_name' ) );
+			add_action( 'init', array( $plugin_users, 'redirect' ) );
+			add_action( 'admin_menu', array( $plugin_users, 'remove_specifc_postype_for_external_worker' ), 999 );
+		}
+
 	}

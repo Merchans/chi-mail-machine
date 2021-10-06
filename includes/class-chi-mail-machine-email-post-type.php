@@ -98,16 +98,34 @@
 				'parent_item_colon'     => __( 'Parent Emails:', ' chi-mail-machine' ),
 				'not_found'             => __( 'No mails found.', ' chi-mail-machine' ),
 				'not_found_in_trash'    => __( 'No mails found in Trash.', ' chi-mail-machine' ),
-				'featured_image'        => _x( 'Email Cover Image', 'Overrides the “Featured Image” phrase for this post type. Added in 4.3', ' chi-mail-machine' ),
-				'set_featured_image'    => _x( 'Set cover image', 'Overrides the “Set featured image” phrase for this post type. Added in 4.3', ' chi-mail-machine' ),
-				'remove_featured_image' => _x( 'Remove cover image', 'Overrides the “Remove featured image” phrase for this post type. Added in 4.3', ' chi-mail-machine' ),
-				'use_featured_image'    => _x( 'Use as cover image', 'Overrides the “Use as featured image” phrase for this post type. Added in 4.3', ' chi-mail-machine' ),
-				'archives'              => _x( 'Email archives', 'The post type archive label used in nav menus. Default “Post Archives”. Added in 4.4', ' chi-mail-machine' ),
-				'insert_into_item'      => _x( 'Insert into email', 'Overrides the “Insert into post”/”Insert into page” phrase (used when inserting media into a post). Added in 4.4', ' chi-mail-machine' ),
-				'uploaded_to_this_item' => _x( 'Uploaded to this email', 'Overrides the “Uploaded to this post”/”Uploaded to this page” phrase (used when viewing media attached to a post). Added in 4.4', ' chi-mail-machine' ),
-				'filter_items_list'     => _x( 'Filter emails list', 'Screen reader text for the filter links heading on the post type listing screen. Default “Filter posts list”/”Filter pages list”. Added in 4.4', ' chi-mail-machine' ),
-				'items_list_navigation' => _x( 'Emails list navigation', 'Screen reader text for the pagination heading on the post type listing screen. Default “Posts list navigation”/”Pages list navigation”. Added in 4.4', ' chi-mail-machine' ),
-				'items_list'            => _x( 'Emails list', 'Screen reader text for the items list heading on the post type listing screen. Default “Posts list”/”Pages list”. Added in 4.4', ' chi-mail-machine' ),
+				'featured_image'        => _x( 'Email Cover Image',
+					'Overrides the “Featured Image” phrase for this post type. Added in 4.3', ' chi-mail-machine' ),
+				'set_featured_image'    => _x( 'Set cover image',
+					'Overrides the “Set featured image” phrase for this post type. Added in 4.3', ' chi-mail-machine' ),
+				'remove_featured_image' => _x( 'Remove cover image',
+					'Overrides the “Remove featured image” phrase for this post type. Added in 4.3',
+					' chi-mail-machine' ),
+				'use_featured_image'    => _x( 'Use as cover image',
+					'Overrides the “Use as featured image” phrase for this post type. Added in 4.3',
+					' chi-mail-machine' ),
+				'archives'              => _x( 'Email archives',
+					'The post type archive label used in nav menus. Default “Post Archives”. Added in 4.4',
+					' chi-mail-machine' ),
+				'insert_into_item'      => _x( 'Insert into email',
+					'Overrides the “Insert into post”/”Insert into page” phrase (used when inserting media into a post). Added in 4.4',
+					' chi-mail-machine' ),
+				'uploaded_to_this_item' => _x( 'Uploaded to this email',
+					'Overrides the “Uploaded to this post”/”Uploaded to this page” phrase (used when viewing media attached to a post). Added in 4.4',
+					' chi-mail-machine' ),
+				'filter_items_list'     => _x( 'Filter emails list',
+					'Screen reader text for the filter links heading on the post type listing screen. Default “Filter posts list”/”Filter pages list”. Added in 4.4',
+					' chi-mail-machine' ),
+				'items_list_navigation' => _x( 'Emails list navigation',
+					'Screen reader text for the pagination heading on the post type listing screen. Default “Posts list navigation”/”Pages list navigation”. Added in 4.4',
+					' chi-mail-machine' ),
+				'items_list'            => _x( 'Emails list',
+					'Screen reader text for the items list heading on the post type listing screen. Default “Posts list”/”Pages list”. Added in 4.4',
+					' chi-mail-machine' ),
 			);
 
 			$args = array(
@@ -120,7 +138,8 @@
 				'nav_menu_item'      => true,
 				'query_var'          => true,
 				'rewrite'            => array( 'slug' => 'email/%category%' ),
-				'capability_type'    => 'post',
+				'capability_type'    => 'email',
+				'map_meta_cap'       => true,
 				'has_archive'        => 'email',
 				'show_in_rest'       => true,
 				'menu_position'      => 5,
@@ -245,30 +264,6 @@
 			return $template;
 		}
 
-		/**
-		 * Archive Template for CPT: email
-		 */
-		public function archive_template_email( $template ) {
-
-			if ( is_archive( 'chi_email' ) ) {
-				return $this->get_template_loader();
-			}
-
-			return $template;
-		}
-
-		public function single_filter_post_type_link( $link, $post ) {
-			if ( $post->post_type != 'chi_email' ) {
-				return $link;
-			}
-
-			if ( $cats = get_the_terms( $post->ID, 'category' ) ) {
-				$link = str_replace( '%category%', array_pop( $cats )->slug, $link );
-			}
-
-			return $link;
-		}
-
 		public function get_template_loader() {
 
 			// Get all informacion about categories
@@ -303,6 +298,30 @@
 				return $template_loader->get_template_part( 'single', 'chi_email', false );
 			}
 
+		}
+
+		/**
+		 * Archive Template for CPT: email
+		 */
+		public function archive_template_email( $template ) {
+
+			if ( is_archive( 'chi_email' ) ) {
+				return $this->get_template_loader();
+			}
+
+			return $template;
+		}
+
+		public function single_filter_post_type_link( $link, $post ) {
+			if ( $post->post_type != 'chi_email' ) {
+				return $link;
+			}
+
+			if ( $cats = get_the_terms( $post->ID, 'category' ) ) {
+				$link = str_replace( '%category%', array_pop( $cats )->slug, $link );
+			}
+
+			return $link;
 		}
 
 		/**
@@ -375,7 +394,7 @@
 				'type'          => 'checkbox',
 				'capability'    => 'edit_posts',
 				'show_on_cb'    => [ $this, 'cmb_show_meta_to_chosen_roles' ],
-				'show_on_roles' => array( 'author', 'administrator' ),
+				'show_on_roles' => array( 'author', 'editor', 'administrator' ),
 			) );
 
 			$metabox_checbox->add_field( array(
@@ -389,7 +408,7 @@
 
 			$metabox_checbox->add_field( array(
 				'name'          => __( 'Admin: Email has been sent to an external company', 'chi-mail-machine' ),
-				'desc'          => __( 'If the editor considers the e-mail is ready', 'chi-mail-machine' ),
+				'desc'          => __( 'If the admin considers the e-mail is technically ready', 'chi-mail-machine' ),
 				'id'            => $prefix . '_admin_state',
 				'type'          => 'checkbox',
 				'show_on_cb'    => [ $this, 'cmb_show_meta_to_chosen_roles' ],
@@ -466,7 +485,8 @@ Nepřejete-li si dostávat tyto e-maily, klikněte prosím ZDE.',
 
 			if ( $label && $field->options( 'tooltip' ) ) {
 				// If label and tooltip exists, add it
-				$label .= sprintf( '<span class="tip"><i class="fa %s"></i>%s</span>', $field->options( 'tooltip-class' ), $field->options( 'tooltip' ) );
+				$label .= sprintf( '<span class="tip"><i class="fa %s"></i>%s</span>',
+					$field->options( 'tooltip-class' ), $field->options( 'tooltip' ) );
 			}
 
 			return $label;

@@ -2,11 +2,15 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e90737f4-dedb-400e-8fa8-754272e7e2b7" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/includes/class-chi-mail-machine-shortcodes.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/email-download.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/admin/css/chi-editor.css" beforeDir="false" afterPath="$PROJECT_DIR$/admin/css/chi-editor.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/class-chi-mail-machine-admin.php" beforeDir="false" afterPath="$PROJECT_DIR$/admin/class-chi-mail-machine-admin.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/chi-mail-machine.php" beforeDir="false" afterPath="$PROJECT_DIR$/chi-mail-machine.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/class-chi-mail-machine-blocks.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/class-chi-mail-machine-blocks.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/class-chi-mail-machine-email-post-type.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/class-chi-mail-machine-email-post-type.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/class-chi-mail-machine-users.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/class-chi-mail-machine-users.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/includes/class-chi-mail-machine.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/class-chi-mail-machine.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/class-logsystem.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/class-logsystem.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/single-chi_email.php" beforeDir="false" afterPath="$PROJECT_DIR$/templates/single-chi_email.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/vendor/cmb2-field-post-search-ajax" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/cmb2-field-post-search-ajax" afterDir="false" />
     </list>
@@ -145,17 +149,20 @@
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
+    <option name="showMembers" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="NEW_TOOLWINDOW_STRIPE_DEFAULTS" value="true" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/includes" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="options.lastSelected" value="configurable.group.appearance" />
     <property name="options.splitter.details.proportions" value="0.2" />
     <property name="options.splitter.main.proportions" value="0.3" />
-    <property name="settings.editor.selected.configurable" value="web-ide.project.structure" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
+    <property name="ts.external.directory.path" value="$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/jsLanguageServicesImpl/external" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RecentsManager">
@@ -163,10 +170,29 @@
       <recent name="$PROJECT_DIR$/includes" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/admin/js/blocks/firstblock" />
+      <recent name="$PROJECT_DIR$/admin/js/blocks" />
       <recent name="$PROJECT_DIR$/src" />
       <recent name="$PROJECT_DIR$/templates" />
       <recent name="$PROJECT_DIR$/vendor" />
     </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="dev" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/admin/js/blocks/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="dev" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="npm.dev" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -193,7 +219,17 @@
       <workItem from="1621844204129" duration="1751000" />
       <workItem from="1622555359836" duration="24988000" />
       <workItem from="1622793244626" duration="13674000" />
-      <workItem from="1622873228676" duration="7456000" />
+      <workItem from="1622873228676" duration="10612000" />
+      <workItem from="1622913443385" duration="1800000" />
+      <workItem from="1622918074297" duration="1216000" />
+      <workItem from="1622921509041" duration="8550000" />
+      <workItem from="1623059224065" duration="1000000" />
+      <workItem from="1623401163511" duration="24153000" />
+      <workItem from="1623507100986" duration="1461000" />
+      <workItem from="1630319498692" duration="2245000" />
+      <workItem from="1630355097376" duration="8000" />
+      <workItem from="1630418160497" duration="65000" />
+      <workItem from="1633427721318" duration="12708000" />
     </task>
     <servers />
   </component>
@@ -214,5 +250,9 @@
   </component>
   <component name="WordPressConfiguration" enabled="true">
     <wordpressPath>$PROJECT_DIR$/../../..</wordpressPath>
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>

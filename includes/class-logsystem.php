@@ -35,12 +35,12 @@
 		public function add_meta_boxes() {
 			foreach ( $this->config['post-type'] as $screen ) {
 				add_meta_box(
-						sanitize_title( $this->config['title'] ),
-						$this->config['title'],
-						[ $this, 'add_meta_box_callback' ],
-						$screen,
-						$this->config['context'],
-						$this->config['priority']
+					sanitize_title( $this->config['title'] ),
+					$this->config['title'],
+					[ $this, 'add_meta_box_callback' ],
+					$screen,
+					$this->config['context'],
+					$this->config['priority']
 				);
 			}
 		}
@@ -70,29 +70,124 @@
 					$agent = $_SERVER['HTTP_USER_AGENT'];
 
 					$data = array(
-							'comment_post_ID'      => $post_id,
-							'comment_author'       => 'system',
-							'comment_author_email' => '',
-							'comment_content'      => $sanitized,
-							'comment_author_IP'    => get_the_user_ip(),
-							'comment_agent'        => $agent,
-							'comment_date'         => date( 'Y-m-d H:i:s' ),
-							'comment_date_gmt'     => date( 'Y-m-d H:i:s' ),
-							'comment_approved'     => 1,
+						'comment_post_ID'      => $post_id,
+						'comment_author'       => 'system',
+						'comment_author_email' => get_the_author_meta('user_email'),
+						'comment_content'      => $sanitized,
+						'comment_author_IP'    => get_the_user_ip(),
+						'comment_agent'        => $agent,
+						'comment_date'         => date( 'Y-m-d H:i:s' ),
+						'comment_date_gmt'     => date( 'Y-m-d H:i:s' ),
+						'comment_approved'     => 1,
+					);
+					if ( ! metadata_exists( 'post', $post_id, 'author_state_was_send' ) ) {
+
+						add_post_meta( $post_id, 'author_state_was_send', 1 );
+						$to[]  = 'addmarkovic@gmail.com';
+						$args  = array(
+							'role'    => 'editor',
+							'orderby' => 'user_nicename',
+							'order'   => 'ASC'
+						);
+						$users = get_users( $args );
+						foreach ( $users as $user ) {
+							$to[] = $user->user_email;
+						}
+
+						$subject = 'Corecture ' . get_the_category( $post_id )[0]->name . ' email ' .
+						           get_post_meta( $post_id, 'chi_email_special_number',
+							           true );
+						$body    = 'Author: has completed the email: ' . get_edit_post_link( $post_id );
+						$headers = array( 'Content-Type: text/html; charset=UTF-8' );
+						$succes  = false;
+						$succes  = wp_mail( $to, $subject, $body, $headers );
+
+						wp_mail( $to, $subject, $body, $headers );
+						if ( $succes ) {
+							$comment_id = wp_insert_comment( $data );
+							wp_notify_postauthor($comment_id);
+						}
+
+					}
+				}
+
+
+			} else {
+				if ( metadata_exists( 'post', $post_id, 'author_state_was_send' ) ) {
+					delete_post_meta( $post_id, 'author_state_was_send' );
+				}
+			}
+
+			$chi_email_editor_state = get_post_meta( $post_id, 'chi_email_editor_state', true );
+
+			if ( $chi_email_editor_state == "on" ) {
+
+				if ( get_post_meta( $post_id, 'editor_state_was_send', true ) != 1 ) {
+
+					$sanitized = '<strong>Editor: checked the email.</strong>';
+
+					$agent = $_SERVER['HTTP_USER_AGENT'];
+
+					$data = array(
+						'comment_post_ID'      => $post_id,
+						'comment_author'       => 'system',
+						'comment_author_email' => '',
+						'comment_content'      => $sanitized,
+						'comment_author_IP'    => get_the_user_ip(),
+						'comment_agent'        => $agent,
+						'comment_date'         => date( 'Y-m-d H:i:s' ),
+						'comment_date_gmt'     => date( 'Y-m-d H:i:s' ),
+						'comment_approved'     => 1,
 					);
 
 					wp_insert_comment( $data );
-					if ( ! metadata_exists( 'post', $post_id, 'author_state_was_send' ) ) {
-						add_post_meta( $post_id, 'author_state_was_send', 1 );
+					if ( ! metadata_exists( 'post', $post_id, 'editor_state_was_send' ) ) {
+						add_post_meta( $post_id, 'editor_state_was_send', 1 );
 					}
 				}
 
 			} else {
 
-				if ( metadata_exists( 'post', $post_id, 'author_state_was_send' ) ) {
-					delete_post_meta( $post_id, 'author_state_was_send' );
+				if ( metadata_exists( 'post', $post_id, 'editor_state_was_send' ) ) {
+					delete_post_meta( $post_id, 'editor_state_was_send' );
 				}
 			}
+
+			$chi_email_admin_state = get_post_meta( $post_id, 'chi_email_admin_state', true );
+
+			if ( $chi_email_admin_state == "on" ) {
+
+				if ( get_post_meta( $post_id, 'admin_state_was_send', true ) != 1 ) {
+
+					$sanitized = '<strong>Admin: email is technically ready.</strong>';
+
+					$agent = $_SERVER['HTTP_USER_AGENT'];
+
+					$data = array(
+						'comment_post_ID'      => $post_id,
+						'comment_author'       => 'system',
+						'comment_author_email' => '',
+						'comment_content'      => $sanitized,
+						'comment_author_IP'    => get_the_user_ip(),
+						'comment_agent'        => $agent,
+						'comment_date'         => date( 'Y-m-d H:i:s' ),
+						'comment_date_gmt'     => date( 'Y-m-d H:i:s' ),
+						'comment_approved'     => 1,
+					);
+
+					wp_insert_comment( $data );
+					if ( ! metadata_exists( 'post', $post_id, 'admin_state_was_send' ) ) {
+						add_post_meta( $post_id, 'admin_state_was_send', 1 );
+					}
+				}
+
+			} else {
+
+				if ( metadata_exists( 'post', $post_id, 'admin_state_was_send' ) ) {
+					delete_post_meta( $post_id, 'admin_state_was_send' );
+				}
+			}
+
 
 			if ( isset( $_POST['chi_emailchoose-option'] ) ) {
 				foreach ( $this->config['fields'] as $field ) {
@@ -113,186 +208,6 @@
 							break;
 					}
 				}
-
-				//				if ( $_POST['chi_emailchoose-option'] == '1' ) {
-//
-//					foreach ( $this->config['fields'] as $field ) {
-//
-//
-//						$sanitized = sanitize_text_field( $_POST[ $field['id'] ] );
-//
-//						switch ( $field['id'] ) {
-//							case 'chi_emailnotes-on-the-text':
-//
-//								if ( isset( $_POST[ $field['id'] ] ) ) {
-//
-//									if ( empty( $_POST[ $field['id'] ] ) ) {
-//										break;
-//									}
-//
-//									$author_id = get_current_user_id();
-//
-//									$agent = $_SERVER['HTTP_USER_AGENT'];
-//									$data  = array(
-//											'comment_post_ID'      => $post_id,
-//											'comment_author'       => get_the_author_meta( 'nickname', $author_id ),
-//											'comment_author_email' => get_the_author_meta( 'user_email', $author_id ),
-//											'comment_content'      => $sanitized,
-//											'comment_author_IP'    => get_the_user_ip(),
-//											'comment_agent'        => $agent,
-//											'comment_date'         => date( 'Y-m-d H:i:s' ),
-//											'comment_date_gmt'     => date( 'Y-m-d H:i:s' ),
-//											'comment_approved'     => 1,
-//									);
-//
-////									wp_insert_comment( $data );
-//								}
-//								break;
-//							default:
-//								$user = wp_get_current_user();
-//								if ( ! ( in_array( 'administrator', (array) $user->roles ) ) ) {
-//									break;
-//								}
-//								update_post_meta( $post_id, $field['id'], $sanitized );
-//								break;
-//
-//						}
-//					}
-//				}
-//				if ( $_POST['chi_emailchoose-option'] == '2' ) {
-//					foreach ( $this->config['fields'] as $field ) {
-//
-//						$sanitized = sanitize_text_field( $_POST[ $field['id'] ] );
-//
-//						//RespiroNews - Newsletter č. 32R - rozesílka 8.4.2021 06:00
-//						//						Dobrý deň,
-//						//
-//						//						poprosil by som Vás o nastavenie emailu 32R pre projekt RespiroNews
-//						//						na zajtra tj. 8.4.2020 o 6h.
-//						//
-//						//						Predmet: Plicní embolie při COVID-19 – co je pro ni charakteristické?
-//						//
-//						//						Za skorú odpoveď
-//						//						Ďakujem
-//
-//						if ( isset( $_POST['chi_email_taxonomy_select'] ) &&
-//							 isset( $_POST['chi_email_special_number'] ) &&
-//							 isset( $_POST['chi_emailfor'] ) &&
-//							 isset( $_POST['chi_emailemail-subject'] ) &&
-//							 isset( $_POST['chi_emaildate-the-email-was-sent'] ) &&
-//							 isset( $_POST['chi_emailtime-the-email-was-sent'] ) &&
-//							 isset( $_POST['chi_emailnotes-on-the-text'] ) ) {
-//
-//
-//							$subject_data = ucwords( $_POST['chi_email_taxonomy_select'] ) . ' - Newsletter č. ' . $_POST['chi_email_special_number'] . ' - rozesílka ' . $_POST['chi_emaildate-the-email-was-sent'] . ' ' . $_POST['chi_emailtime-the-email-was-sent'];
-//
-//							$subject = sanitize_text_field( $subject_data );
-//
-//							$message = nl2br( 'Dobrý deň,<br><br>Poprosil by som Vás o nastavenie emailu č. <strong>' . $_POST['chi_email_special_number'] . '</strong> pre projekt <strong>' . ucwords( $_POST['chi_email_taxonomy_select'] ) . '</strong> na <strong>' . $_POST['chi_emaildate-the-email-was-sent'] . '</strong> o <strong>' . $_POST['chi_emailtime-the-email-was-sent'] . '</strong>.<br><br>Predmet: <strong>' . get_the_title() . '</strong><br><br>Za skorú odpoveď<br>Ďakujem', true );
-//
-//						}
-//						// chi_email_taxonomy_select
-//						// chi_email_special_number
-//						// chi_emailfor
-//						// chi_emailemail-subject
-//						// chi_emaildate-the-email-was-sent
-//						// chi_emailtime-the-email-was-sent
-//						// chi_emailnotes-on-the-text
-//
-//						switch ( $field['id'] ) {
-//							case 'chi_emailnotes-on-the-text':
-//								if ( isset( $_POST[ $field['id'] ] ) ) {
-//
-//									if ( ! empty( $_POST[ $field['id'] ] ) ) {
-//										break;
-//									}
-//
-//									$author_id = get_current_user_id();
-//
-//									$agent = $_SERVER['HTTP_USER_AGENT'];
-//									$data  = array(
-//											'comment_post_ID'      => $post_id,
-//											'comment_author'       => get_the_author_meta( 'nickname', $author_id ),
-//											'comment_author_email' => get_the_author_meta( 'user_email', $author_id ),
-//											'comment_content'      => $message,
-//											'comment_author_IP'    => get_the_user_ip(),
-//											'comment_agent'        => $agent,
-//											'comment_date'         => date( 'Y-m-d H:i:s' ),
-//											'comment_date_gmt'     => date( 'Y-m-d H:i:s' ),
-//											'comment_approved'     => 1,
-//									);
-//
-//									$comment_id = wp_insert_comment( $data );
-//									add_comment_meta( $comment_id, 'subject', $subject );
-//
-//								}
-//								break;
-//							default:
-//								$user = wp_get_current_user();
-//								if ( ! ( in_array( 'administrator', (array) $user->roles ) ) ) {
-//									break;
-//								}
-//								update_post_meta( $post_id, $field['id'], $sanitized );
-//								break;
-//
-//						}
-//					}
-//				}
-//				if ( $_POST['chi_emailchoose-option'] == '3' ) {
-//					foreach ( $this->config['fields'] as $field ) {
-//
-//						$sanitized = sanitize_text_field( $_POST[ $field['id'] ] );
-//
-//						if ( isset( $_POST['chi_emailfor'] ) &&
-//							 isset( $_POST['chi_emailemail-subject'] ) &&
-//							 isset( $_POST['chi_emailnotes-on-the-text'] ) ) {
-//
-//
-//							$subject = sanitize_text_field( $_POST['chi_emailemail-subject'] );
-//							$message = sanitize_text_field( $_POST['chi_emailnotes-on-the-text'] );
-//
-//						}
-//
-//						switch ( $field['id'] ) {
-//							case 'chi_emailnotes-on-the-text':
-//								if ( isset( $_POST[ $field['id'] ] ) ) {
-//
-//									if ( empty( $_POST[ $field['id'] ] ) ) {
-//										break;
-//									}
-//
-//									$author_id = get_current_user_id();
-//
-//									$agent = $_SERVER['HTTP_USER_AGENT'];
-//									$data  = array(
-//											'comment_post_ID'      => $post_id,
-//											'comment_author'       => get_the_author_meta( 'nickname', $author_id ),
-//											'comment_author_email' => get_the_author_meta( 'user_email', $author_id ),
-//											'comment_content'      => $message,
-//											'comment_author_IP'    => get_the_user_ip(),
-//											'comment_agent'        => $agent,
-//											'comment_date'         => date( 'Y-m-d H:i:s' ),
-//											'comment_date_gmt'     => date( 'Y-m-d H:i:s' ),
-//											'comment_approved'     => 1,
-//									);
-//
-//									$comment_id = wp_insert_comment( $data );
-//									add_comment_meta( $comment_id, 'subject', $subject );
-//
-//								}
-//								break;
-//							default:
-//								$user = wp_get_current_user();
-//								if ( ! ( in_array( 'administrator', (array) $user->roles ) ) ) {
-//									break;
-//								}
-//								update_post_meta( $post_id, $field['id'], $sanitized );
-//								break;
-//
-//						}
-//					}
-//				}
-
 			}
 		}
 
@@ -303,71 +218,73 @@
 
 		private function fields_table() {
 			$args     = array(
-					'post_id' => get_the_ID(),   // Use post_id, not post_ID
+				'post_id' => get_the_ID(),   // Use post_id, not post_ID
 			);
 			$comments = get_comments( $args );
 
 			?>
-			<ul class="order_notes">
+            <ul class="order_notes">
 				<?php foreach ( $comments as $comment ) : ?>
-					<li rel="<?php $comment->comment_ID; ?>" class="note">
-						<div class="note_content <?php echo( get_comment_meta( $comment->comment_ID, 'subject', true ) ? 'note_content--info' : '' ) ?>
+                    <li rel="<?php $comment->comment_ID; ?>" class="note">
+                        <div class="note_content <?php echo( get_comment_meta( $comment->comment_ID, 'subject',
+							true ) ? 'note_content--info' : '' ) ?>
 <?php echo ( $comment->comment_author == "system" ) ? "note_content--system" : "" ?>">
 							<?php if ( get_comment_meta( $comment->comment_ID, 'subject', true ) ) : ?>
-								<p>Predmet emailu:
-									<strong><?php echo get_comment_meta( $comment->comment_ID, 'subject', true ) ?></strong>
-								</p>
+                                <p>Predmet emailu:
+                                    <strong><?php echo get_comment_meta( $comment->comment_ID, 'subject',
+											true ) ?></strong>
+                                </p>
 							<?php endif ?>
-							<p><?php echo $comment->comment_content; ?></p>
-						</div>
-						<p class="meta">
-							<abbr class="exact-date" title="<?php echo $comment->comment_date_gmt ?>">
+                            <p><?php echo $comment->comment_content; ?></p>
+                        </div>
+                        <p class="meta">
+                            <abbr class="exact-date" title="<?php echo $comment->comment_date_gmt ?>">
 								<?php echo $comment->comment_date; ?></abbr>
 							<?php echo $comment->comment_author; ?>
-							<a href="<?php echo admin_url( '/comment.php?action=editcomment&c=' . $comment->comment_ID . '' ); ?>"
-							   class="vim-q comment-inline button-link" role="button">Edit note</a> |
+                            <a href="<?php echo admin_url( '/comment.php?action=editcomment&c=' . $comment->comment_ID . '' ); ?>"
+                               class="vim-q comment-inline button-link" role="button">Edit note</a> |
 							<?php
 								$del_nonce = esc_html( '_wpnonce=' . wp_create_nonce( "delete-comment_$comment->comment_ID" ) );
 								$trash_url = $trash_url = esc_url( "comment.php?action=trashcomment&p=$comment->comment_post_ID&c=$comment->comment_ID&$del_nonce&reason=1" );
 							?>
-							<a href="<?php echo $trash_url ?>"
-							   class="delete_note" role="button">Delete
-								note</a>
-						</p>
-					</li>
+                            <a href="<?php echo $trash_url ?>"
+                               class="delete_note" role="button">Delete
+                                note</a>
+                        </p>
+                    </li>
 				<?php endforeach ?>
-			</ul>
-			<table class="form-table" role="presentation">
-				<tbody><?php
+            </ul>
+            <table class="form-table" role="presentation">
+                <tbody><?php
 					foreach ( $this->config['fields'] as $field ) {
 						?>
-					<tr class="tr-<?php echo $field['id'] ?>">
-						<th scope="row"><?php $this->label( $field ); ?></th>
-						<td><?php $this->field( $field ); ?></td>
-						</tr><?php
+                    <tr class="tr-<?php echo $field['id'] ?>">
+                        <th scope="row"><?php $this->label( $field ); ?></th>
+                        <td><?php $this->field( $field ); ?></td>
+                        </tr><?php
 					}
 				?>
-				<tr>
-					<th scope="row">
-						<label for="<?php echo $this->config['prefix'] ?>choose-option">Choose an option:</label>
-					</th>
-					<td>
-						<select name="<?php echo $this->config['prefix'] ?>choose-option"
-								id="<?php echo $this->config['prefix'] ?>choose-option">
-							<option value="1">Email note</option>
+                <tr>
+                    <th scope="row">
+                        <label for="<?php echo $this->config['prefix'] ?>choose-option">Choose an option:</label>
+                    </th>
+                    <td>
+                        <select name="<?php echo $this->config['prefix'] ?>choose-option"
+                                id="<?php echo $this->config['prefix'] ?>choose-option">
+                            <option value="1">Email note</option>
 							<?php if ( ( in_array( 'administrator', (array) wp_get_current_user()->roles ) ) ) : ?>
-								<option value="2">Sending an email to an external company</option>
-								<option value="3">Edit email</option>
+                                <option value="2">Sending an email to an external company</option>
+                                <option value="3">Edit email</option>
 							<?php endif ?>
-						</select>
-						<input id="publishComment" class="button-primary" type="submit" value="Send" accesskey="p"
-							   tabindex="5"
-							   name="Send" data-id="<?php the_ID(); ?>">
-						<span class="spinner"></span>
-					</td>
-				</tr>
-				</tbody>
-			</table>
+                        </select>
+                        <input id="publishComment" class="button-primary" type="submit" value="Send" accesskey="p"
+                               tabindex="5"
+                               name="Send" data-id="<?php the_ID(); ?>">
+                        <span class="spinner"></span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
 			<?php
 		}
 
@@ -376,8 +293,8 @@
 			switch ( $field['type'] ) {
 				default:
 					printf(
-							'<label class="" for="%s">%s</label>',
-							$field['id'], $field['label']
+						'<label class="" for="%s">%s</label>',
+						$field['id'], $field['label']
 					);
 			}
 		}
@@ -396,36 +313,16 @@
 			}
 		}
 
-		private function input( $field ) {
-			printf(
-					'<input class="regular-text %s" id="%s" name="%s" %s type="%s" value="%s" autocomplete="off">',
-					isset( $field['class'] ) ? $field['class'] : '',
-					$field['id'], $field['id'],
-					isset( $field['pattern'] ) ? "pattern='{$field['pattern']}'" : '',
-					$field['type'],
-					$this->value( $field )
-			);
-		}
-
 		private function input_minmax( $field ) {
 			printf(
-					'<input class="regular-text" id="%s" %s %s name="%s" %s type="%s" value="%s" autocomplete="off">',
-					$field['id'],
-					isset( $field['max'] ) ? "max='{$field['max']}'" : '',
-					isset( $field['min'] ) ? "min='{$field['min']}'" : '',
-					$field['id'],
-					isset( $field['step'] ) ? "step='{$field['step']}'" : '',
-					$field['type'],
-					$this->value( $field )
-			);
-		}
-
-		private function textarea( $field ) {
-			printf(
-					'<textarea class="regular-text" id="%s" name="%s" rows="%d">%s</textarea>',
-					$field['id'], $field['id'],
-					isset( $field['rows'] ) ? $field['rows'] : 5,
-					$this->value( $field )
+				'<input class="regular-text" id="%s" %s %s name="%s" %s type="%s" value="%s" autocomplete="off">',
+				$field['id'],
+				isset( $field['max'] ) ? "max='{$field['max']}'" : '',
+				isset( $field['min'] ) ? "min='{$field['min']}'" : '',
+				$field['id'],
+				isset( $field['step'] ) ? "step='{$field['step']}'" : '',
+				$field['type'],
+				$this->value( $field )
 			);
 		}
 
@@ -439,13 +336,33 @@
 				$value = get_post_meta( $post->ID, $meta_key, true );
 			} elseif ( metadata_exists( 'post', $post->ID, $field['id'] ) ) {
 				$value = get_post_meta( $post->ID, $field['id'], true );
-			} else if ( isset( $field['default'] ) ) {
+			} elseif ( isset( $field['default'] ) ) {
 				$value = $field['default'];
 			} else {
 				return '';
 			}
 
 			return str_replace( '\u0027', "'", $value );
+		}
+
+		private function textarea( $field ) {
+			printf(
+				'<textarea class="regular-text" id="%s" name="%s" rows="%d">%s</textarea>',
+				$field['id'], $field['id'],
+				isset( $field['rows'] ) ? $field['rows'] : 5,
+				$this->value( $field )
+			);
+		}
+
+		private function input( $field ) {
+			printf(
+				'<input class="regular-text %s" id="%s" name="%s" %s type="%s" value="%s" autocomplete="off">',
+				isset( $field['class'] ) ? $field['class'] : '',
+				$field['id'], $field['id'],
+				isset( $field['pattern'] ) ? "pattern='{$field['pattern']}'" : '',
+				$field['type'],
+				$this->value( $field )
+			);
 		}
 
 		public function example_ajax_request() {
@@ -465,15 +382,15 @@
 
 						$agent = $_SERVER['HTTP_USER_AGENT'];
 						$data  = array(
-								'comment_post_ID'      => $_REQUEST['post_id'],
-								'comment_author'       => get_the_author_meta( 'nickname', $author_id ),
-								'comment_author_email' => get_the_author_meta( 'user_email', $author_id ),
-								'comment_content'      => $sanitized,
-								'comment_author_IP'    => get_the_user_ip(),
-								'comment_agent'        => $agent,
-								'comment_date'         => date( 'Y-m-d H:i:s' ),
-								'comment_date_gmt'     => date( 'Y-m-d H:i:s' ),
-								'comment_approved'     => 1,
+							'comment_post_ID'      => $_REQUEST['post_id'],
+							'comment_author'       => get_the_author_meta( 'nickname', $author_id ),
+							'comment_author_email' => get_the_author_meta( 'user_email', $author_id ),
+							'comment_content'      => $sanitized,
+							'comment_author_IP'    => get_the_user_ip(),
+							'comment_agent'        => $agent,
+							'comment_date'         => date( 'Y-m-d H:i:s' ),
+							'comment_date_gmt'     => date( 'Y-m-d H:i:s' ),
+							'comment_approved'     => 1,
 						);
 
 						$comment_id = wp_insert_comment( $data );
@@ -489,15 +406,15 @@
 						break;
 					case 2:
 						if ( ! isset( $data["taxonomuSelect"] ) or
-							 ! isset( $data["specialNumber"] ) or
-							 ! isset( $data["noteDate"] ) or
-							 ! isset( $data["noteTime"] ) or
-							 ! isset( $data["postTitle"] ) or
-							 ( $data["postTitle"] == "" ) or
-							 ( $data["specialNumber"] == "" ) or
-							 ( $data["noteDate"] == "" ) or
-							 ( $data["noteTime"] == "" ) or
-							 ( $data["postTitle"] == "" )
+						     ! isset( $data["specialNumber"] ) or
+						     ! isset( $data["noteDate"] ) or
+						     ! isset( $data["noteTime"] ) or
+						     ! isset( $data["postTitle"] ) or
+						     ( $data["postTitle"] == "" ) or
+						     ( $data["specialNumber"] == "" ) or
+						     ( $data["noteDate"] == "" ) or
+						     ( $data["noteTime"] == "" ) or
+						     ( $data["postTitle"] == "" )
 						) {
 							break;
 						}
@@ -515,15 +432,15 @@
 
 						$agent = $_SERVER['HTTP_USER_AGENT'];
 						$data  = array(
-								'comment_post_ID'      => $_REQUEST['post_id'],
-								'comment_author'       => get_the_author_meta( 'nickname', $author_id ),
-								'comment_author_email' => get_the_author_meta( 'user_email', $author_id ),
-								'comment_content'      => $email_text,
-								'comment_author_IP'    => get_the_user_ip(),
-								'comment_agent'        => $agent,
-								'comment_date'         => date( 'Y-m-d H:i:s' ),
-								'comment_date_gmt'     => date( 'Y-m-d H:i:s' ),
-								'comment_approved'     => 1,
+							'comment_post_ID'      => $_REQUEST['post_id'],
+							'comment_author'       => get_the_author_meta( 'nickname', $author_id ),
+							'comment_author_email' => get_the_author_meta( 'user_email', $author_id ),
+							'comment_content'      => $email_text,
+							'comment_author_IP'    => get_the_user_ip(),
+							'comment_agent'        => $agent,
+							'comment_date'         => date( 'Y-m-d H:i:s' ),
+							'comment_date_gmt'     => date( 'Y-m-d H:i:s' ),
+							'comment_approved'     => 1,
 						);
 
 
@@ -560,10 +477,7 @@
 					if ( strpos( $user_email, $request ) !== false ) {
 						$find_email[] = $user_email;
 					}
-
-
 				}
-
 				echo json_encode( $find_email );
 			}
 			die();
@@ -593,8 +507,8 @@
 			$input_val = $_REQUEST['input_val'];
 			if ( $post_id ) {
 				if ( filter_var( $input_val, FILTER_VALIDATE_URL ) === false ) {
-					echo  'Not a valid URL';
-					die( );
+					echo 'Not a valid URL';
+					die();
 				}
 				update_post_meta( $post_id, 'statistic_url', $input_val );
 
@@ -616,6 +530,7 @@
 					preg_match_all( '/\d+\.?\d*/', $sentence, $matches );
 					$list[] = $matches;
 				}
+
 				$all_respondents = $list[0][0][2];
 				$all_open_email  = $list[0][0][3];
 				$all_web_opens   = $list[0][0][4];

@@ -130,32 +130,39 @@
 		if ( $column == "author_completed" ) {
 			?>
 			<input type="checkbox"
-				   disabled <?php echo get_post_meta( $post_id, 'chi_email_author_state', true ) == 'on' ? 'checked' : '' ?> >
+				   disabled <?php echo get_post_meta( $post_id, 'chi_email_author_state',
+					true ) == 'on' ? 'checked' : '' ?> >
 			<?php
 		}
 		if ( $column == "editor_completed" ) {
 			?>
 			<input type="checkbox"
-				   disabled <?php echo get_post_meta( $post_id, 'chi_email_editor_state', true ) == 'on' ? 'checked' : '' ?> >
+				   disabled <?php echo get_post_meta( $post_id, 'chi_email_editor_state',
+					true ) == 'on' ? 'checked' : '' ?> >
 			<?php
 		}
 		if ( $column == "admin_completed" ) {
 			?>
 			<input type="checkbox"
-				   disabled <?php echo get_post_meta( $post_id, 'chi_email_admin_state', true ) == 'on' ? 'checked' : '' ?> >
+				   disabled <?php echo get_post_meta( $post_id, 'chi_email_admin_state',
+					true ) == 'on' ? 'checked' : '' ?> >
 			<?php
 		}
 		if ( $column == "externalcompany_statistics" ) {
 			?>
 			<input class="statistic-url" type="url" id="text-area-for-statistics-<?php echo $post_id; ?>"
-				   value="<?php echo $statistic_url = get_post_meta( $post_id, 'statistic_url' ) ? get_post_meta( $post_id, 'statistic_url', true ) : '' ?>">
+				   value="<?php echo $statistic_url = get_post_meta( $post_id,
+						   'statistic_url' ) ? get_post_meta( $post_id, 'statistic_url', true ) : '' ?>">
 
 			<input id="add-statistics-<?php echo $post_id; ?>" data-postid="<?php echo $post_id; ?>"
 				   class="statistic-btn button-primary" type="submit" value="Add">
 			<span class="spinner"></span>
 			<div class="statistic-wrap">
-				<?php if ( get_post_meta( $post_id, 'all_respondents', true ) && get_post_meta( $post_id, 'all_open_email', true ) &&  get_post_meta( $post_id, 'all_web_opens', true ) ) : ?>
-					<span class="statistic-info">R: <?php echo get_post_meta( $post_id, 'all_respondents', true ) ?> E: <?php echo get_post_meta( $post_id, 'all_open_email', true ) ?> W: <?php echo get_post_meta( $post_id, 'all_web_opens', true )  ?>&nbsp;</span>
+				<?php if ( get_post_meta( $post_id, 'all_respondents', true ) && get_post_meta( $post_id,
+								'all_open_email', true ) && get_post_meta( $post_id, 'all_web_opens', true ) ) : ?>
+					<span class="statistic-info">R: <?php echo get_post_meta( $post_id, 'all_respondents',
+								true ) ?> E: <?php echo get_post_meta( $post_id, 'all_open_email',
+								true ) ?> W: <?php echo get_post_meta( $post_id, 'all_web_opens', true ) ?>&nbsp;</span>
 				<?php else : ?>
 					<span class="statistic-info">R: X E: X W: X&nbsp;</span>
 				<?php endif ?>
@@ -201,69 +208,6 @@
 		}
 	}
 
-	//	function cmb2_render_callback_for_text_test( $field, $escaped_value, $object_id, $object_type, $field_type_object ) {
-	//		echo '<form class="cmb-form" method="post"><input type="submit" name="submit-cmb" value="' . __( 'Save Settings', 'give' ) . '" class="button-primary"></div></form>';
-	//	}
-	//	add_action( 'cmb2_render_text_test', 'cmb2_render_callback_for_text_test', 10, 5 );
-
-	//	add_filter( 'cmb2_get_metabox_form_format', 'give_modify_cmb2_form_output' );
-	//
-	//	function give_modify_cmb2_form_output( $args ) {
-	//
-	//		return '<form class="cmb-form" method="post" id="%1$s" enctype="multipart/form-data" encoding="multipart/form-data"><input type="hidden" name="object_id" value="%2$s">%3$s<div class="submit-wrap"><input type="submit" name="submit-cmb" value="' . __( 'Save Settings', 'give' ) . '" class="button-primary"></div></form>';
-	//
-	//	}
-
-	////Add default meta box
-	//	add_action( 'add_meta_boxes_chi_email', 'add_custom_meta_box_chi_email' );
-	//	function add_custom_meta_box_chi_email( $post ) {
-	//		add_meta_box( 'sections_meta_box', 'Add Section', 'show_custom_meta_box' );
-	//	}
-	//
-	//	function show_custom_meta_box() {
-	//		//In your case you can use your html::functions
-	//		//Your html for select box
-	//		$sections = array( 'section1', 'section2' );
-	//		$html     = '<select id="sections" name="item[]">';
-	//		foreach ( $sections as $key => $section ) {
-	//			$html .= '<option value="' . $key . '">' . $section . '</option>';
-	//		}
-	//		$html .= '</select><br><br>';
-	//		$html .= '<input  class="addSection" type="button" value="Add Section">';
-	//		echo $html;
-	//	}
-	//
-	////Our custom meta box will be loaded on ajax
-	//	function add_custom_meta_box( $post_name ) {
-	//		echo '<pre>';
-	//		print_r( get_post_meta(
-	//				9945,
-	//				'chi_email_subject',
-	//				true
-	//		) );
-	//		echo '</pre>';
-	//		echo '<pre>';
-	//		print_r(get_the_category( 9945
-	//		) );
-	//		echo '</pre>';
-	//		echo '<div id="sections_structure_box" class="postbox ">
-	//        <div class="handlediv" title="Click to toggle"><br></div><h3 class="hndle ui-sortable-handle"><span>Section Structure</span></h3>
-	//        <div class="inside">
-	//            Done
-	//        </div>';
-	//	}
-	//
-	////Call ajax
-	//	add_action( 'wp_ajax_addStructureBox', 'addStructureBox' );
-	////add_action('wp_ajax_noprev_addStructureBox', 'addStructureBox');
-	//	function addStructureBox() {
-	//		add_custom_meta_box( $_POST['section'] );
-	//		exit;
-	//	}
-	//
-	////In your case you can add script in your style
-	////Add script
-	//	add_action( 'admin_head', 'ajax_script' );
 	function ajax_script() { ?>
 		<script>
 			jQuery(document).ready(function ($) {
@@ -417,7 +361,8 @@
 			<?php
 		}
 	}
-	add_filter( 'allowed_block_types', 'misha_allowed_block_types' );
+
+//	add_filter( 'allowed_block_types', 'misha_allowed_block_types' );
 
 	function misha_allowed_block_types( $allowed_blocks ) {
 
@@ -430,5 +375,16 @@
 
 	}
 
-//	add_action( 'admin_footer-post.php', 'my_post_type_xhr', 999 );
-//	add_action( 'admin_footer-post-new.php', 'my_post_type_xhr', 999 );
+	remove_role( 'guest_author' );
+	function wporg_simple_role() {
+		add_role(
+				'chi_external_worker',
+				'IQUE External Worker',
+				array(
+						'read'         => true,
+						'edit_posts'   => false,
+						'upload_files' => false,
+				),
+		);
+	}
+
