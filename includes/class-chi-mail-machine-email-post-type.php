@@ -233,6 +233,60 @@
 
 		}
 
+		public function external_worker_remainder() {
+			$post_id = ! isset( $_GET["post"] );
+			if ( $post_id ) {
+				return;
+			}
+			$post_id = $_GET["post"];
+
+			if ( metadata_exists( 'post', $post_id, '_externalremainder' ) ) {
+				$time = get_post_meta( $post_id, '_externalremainder', true );
+				$d         = new DateTime( $time );
+				$timestamp = $d->getTimestamp();
+				$timestamp = strtotime( '+1 day', $timestamp );
+				$format_time = date( 'Y-m-d', $timestamp );
+
+				$now = new DateTime(  );
+				$format_now_time = $now->format('Y-m-d');
+
+				if ($format_time > $format_now_time) {
+					return;
+				}
+				if ( ! metadata_exists( 'post', $post_id, '_externalremainder_send' ) ) {
+					$args  = array(
+						'role'    => 'contributor',
+						'orderby' => 'user_nicename',
+						'order'   => 'ASC'
+					);
+					$users = get_users( $args );
+					$to[]  = "addmarkovic@gmail.com";
+					foreach ( $users as $user ) {
+						$to[] = $user->user_email;
+					}
+					$subject = 'Pridať štatistiku pre projekt' . get_the_category( $post_id )[0]->name;
+					$content = 'Pridat štatistiku ' . '<a href="https://kongresonline.test/wp-admin/edit.php?s=' . get_the_title( $post_id ) . 'post_status=all&post_type=chi_email&action=-1&m=0&paged=1&action2=-1">zde</a>';
+
+					$headers = array( 'Content-Type: text/html; charset=UTF-8' );
+					if ( wp_mail( $to, $subject, $content, $headers ) ) {
+						$agent = $_SERVER['HTTP_USER_AGENT'];
+						$data  = array(
+							'comment_post_ID'      => $post_id,
+							'comment_author'       => 'system',
+							'comment_author_email' => '',
+							'comment_content'      => 'Žiadosť o štatistiku podaná',
+							'comment_author_IP'    => get_the_user_ip(),
+							'comment_agent'        => $agent,
+							'comment_date'         => date( 'Y-m-d H:i:s' ),
+							'comment_date_gmt'     => date( 'Y-m-d H:i:s' ),
+							'comment_approved'     => 1,
+						);
+						wp_insert_comment( $data );
+						add_post_meta( $post_id, '_externalremainder_send', 1 );
+					}
+				}
+			}
+		}
 
 		/**
 		 * Filter content for CPT: CHI Email

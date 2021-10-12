@@ -72,7 +72,7 @@
 					$data = array(
 						'comment_post_ID'      => $post_id,
 						'comment_author'       => 'system',
-						'comment_author_email' => get_the_author_meta('user_email'),
+						'comment_author_email' => get_the_author_meta( 'user_email' ),
 						'comment_content'      => $sanitized,
 						'comment_author_IP'    => get_the_user_ip(),
 						'comment_agent'        => $agent,
@@ -81,9 +81,6 @@
 						'comment_approved'     => 1,
 					);
 					if ( ! metadata_exists( 'post', $post_id, 'author_state_was_send' ) ) {
-
-						add_post_meta( $post_id, 'author_state_was_send', 1 );
-						$to[]  = 'addmarkovic@gmail.com';
 						$args  = array(
 							'role'    => 'editor',
 							'orderby' => 'user_nicename',
@@ -105,7 +102,8 @@
 						wp_mail( $to, $subject, $body, $headers );
 						if ( $succes ) {
 							$comment_id = wp_insert_comment( $data );
-							wp_notify_postauthor($comment_id);
+							add_post_meta( $post_id, 'author_state_was_send', 1 );
+							wp_notify_postauthor( $comment_id );
 						}
 
 					}
@@ -140,9 +138,35 @@
 						'comment_approved'     => 1,
 					);
 
-					wp_insert_comment( $data );
 					if ( ! metadata_exists( 'post', $post_id, 'editor_state_was_send' ) ) {
-						add_post_meta( $post_id, 'editor_state_was_send', 1 );
+
+						$args  = array(
+							'role'    => 'administrator',
+							'orderby' => 'user_nicename',
+							'order'   => 'ASC'
+						);
+						$users = get_users( $args );
+						foreach ( $users as $user ) {
+							$to[] = $user->user_email;
+						}
+						$to[] = get_the_author_meta( 'user_email', get_post_field( 'post_author', $post_id ) );
+
+						$to = array_unique( $to );
+
+						$subject = 'Corecture DONE ' . get_the_category( $post_id )[0]->name . ' email' .
+						           get_post_meta( $post_id, 'chi_email_special_number',
+							           true );
+						$body    = 'Editor: checked the email ' . get_the_title() . ' : ' . get_edit_post_link( $post_id );
+						$headers = array( 'Content-Type: text/html; charset=UTF-8' );
+						$succes  = false;
+						$succes  = wp_mail( $to, $subject, $body, $headers );
+
+						wp_mail( $to, $subject, $body, $headers );
+						if ( $succes ) {
+							$comment_id = wp_insert_comment( $data );
+							add_post_meta( $post_id, 'editor_state_was_send', 1 );
+							wp_notify_postauthor( $comment_id );
+						}
 					}
 				}
 
@@ -378,8 +402,6 @@
 
 						$author_id = get_current_user_id();
 
-						$data[] = get_the_author_meta( 'nickname', $author_id );
-
 						$agent = $_SERVER['HTTP_USER_AGENT'];
 						$data  = array(
 							'comment_post_ID'      => $_REQUEST['post_id'],
@@ -418,17 +440,21 @@
 						) {
 							break;
 						}
+
+
 						$subject_data = '' . ucfirst( $data["taxonomuSelect"] ) . ' - Newsletter č. ' . $data['specialNumber'] . ' - rozesílka ' . $data['noteDate'] . ' ' . $data['noteTime'];
 						$email_text   = 'Dobrý deň,<br><br>
 							Poprosil by som Vás o nastavenie emailu č. <strong>' . $data["specialNumber"] . '</strong> pre projekt
 							<strong>' . $data["taxonomuSelect"] . '</strong> na <strong>' . $data["noteDate"] . '</strong> o <strong>' . $data["noteTime"] . 'h.</strong><br><br>
-							Predmet: <strong>' . $data["postTitle"] . '</strong><br><br>
+							Predmet:    <a href="' . get_permalink( $_REQUEST['post_id'] ) . '">
+							                <strong>' . $data["postTitle"] . '</strong>
+							            </a>
+							<br><br>
 							Za skorú odpoveď<br>
 							Ďakujem';
 
 						$author_id = get_current_user_id();
-
-						$data[] = get_the_author_meta( 'nickname', $author_id );
+						$email_remainder_date = $data['noteDate'];
 
 						$agent = $_SERVER['HTTP_USER_AGENT'];
 						$data  = array(
@@ -447,16 +473,53 @@
 						$data['subject_data'] = $subject_data;
 						$subject              = sanitize_text_field( $subject_data );
 
-						$comment_id = wp_insert_comment( $data );
-						if ( $comment_id ) {
+						$args  = array(
+							'role'    => 'contributor',
+							'orderby' => 'user_nicename',
+							'order'   => 'ASC'
+						);
+						$users = get_users( $args );
+						foreach ( $users as $user ) {
+							$to[] = $user->user_email;
+						}
+
+						$headers = array( 'Content-Type: text/html; charset=UTF-8' );
+						$succes  = false;
+						$succes  = wp_mail( $to, $subject_data, $email_text, $headers );
+						if ( $succes ) {
+							$comment_id = wp_insert_comment( $data );
 							add_comment_meta( $comment_id, 'subject', $subject );
+
+							if ( metadata_exists( 'post', $_REQUEST['post_id'], '_externalremainder' ) ) {
+								delete_post_meta( $_REQUEST['post_id'], '_externalremainder' );
+							}
+							add_post_meta( $_REQUEST['post_id'], '_externalremainder', $email_remainder_date );
 						}
 
 						$data['comment_id'] = $comment_id;
+						$data['to']         = $to;
+
 
 						echo json_encode( $data );
 						break;
 				}
+			}
+			// Always die in functions echoing AJAX content
+			wp_die();
+		}
+
+		public function email_admin_done() {
+
+			// The $_REQUEST contains all the data sent via AJAX from the Javascript call
+			if ( isset( $_REQUEST ) ) {
+
+				if ( metadata_exists( 'post', $_REQUEST['post_id'], 'chi_email_admin_state' ) ) {
+					delete_post_meta( $_REQUEST['post_id'], 'chi_email_admin_state' );
+				}
+
+				$checked = add_post_meta( $_REQUEST['post_id'], 'chi_email_admin_state', 'on' );
+
+				echo json_encode( $checked );
 			}
 			// Always die in functions echoing AJAX content
 			wp_die();
@@ -498,9 +561,8 @@
 			}
 
 			// Always die in functions echoing AJAX content
-			die();
+			wp_die();
 		}
-
 
 		public function save_statistic_url() {
 			$post_id   = $_REQUEST['post_id'];
@@ -535,11 +597,29 @@
 				$all_open_email  = $list[0][0][3];
 				$all_web_opens   = $list[0][0][4];
 
+
 				update_post_meta( $post_id, 'all_respondents', $all_respondents );
 				update_post_meta( $post_id, 'all_open_email', $all_open_email );
 				update_post_meta( $post_id, 'all_web_opens', $all_web_opens );
 
-				echo "R: " . $all_respondents . " E: " . $all_open_email . " W: " . $all_web_opens . "";
+				$agent   = $_SERVER['HTTP_USER_AGENT'];
+				$content = "R: " . $all_respondents . " O: " . $all_open_email . " W: " . $all_web_opens . "";
+
+				$data = array(
+					'comment_post_ID'      => $post_id,
+					'comment_author'       => 'system',
+					'comment_author_email' => '',
+					'comment_content'      => $content,
+					'comment_author_IP'    => get_the_user_ip(),
+					'comment_agent'        => $agent,
+					'comment_date'         => date( 'Y-m-d H:i:s' ),
+					'comment_date_gmt'     => date( 'Y-m-d H:i:s' ),
+					'comment_approved'     => 1,
+				);
+
+				wp_insert_comment( $data );
+
+				echo $content;
 
 			}
 			die();

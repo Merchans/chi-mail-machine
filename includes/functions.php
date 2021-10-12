@@ -23,3 +23,5 @@
 		return apply_filters( 'wpb_get_ip', $ip );
 
 	}
+
+

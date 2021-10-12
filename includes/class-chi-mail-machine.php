@@ -146,6 +146,7 @@
 			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-chi-mail-machine-blocks.php';
 
 			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-chi-mail-machine-users.php';
+
 			/**
 			 * The class responsible for all Meta Box throw plugin. CMB2 init for meta box
 			 */
@@ -199,6 +200,27 @@
 		}
 
 		/**
+		 * The name of the plugin used to uniquely identify it within the context of
+		 * WordPress and to define internationalization functionality.
+		 *
+		 * @return    string    The name of the plugin.
+		 * @since     1.0.0
+		 */
+		public function get_plugin_name() {
+			return $this->plugin_name;
+		}
+
+		/**
+		 * Retrieve the version number of the plugin.
+		 *
+		 * @return    string    The version number of the plugin.
+		 * @since     1.0.0
+		 */
+		public function get_version() {
+			return $this->version;
+		}
+
+		/**
 		 * Register all of the hooks related to the public-facing functionality
 		 * of the plugin.
 		 *
@@ -214,46 +236,6 @@
 
 //		$this->loader->add_action( 'init', $plugin_public, 'register_chi_email_post_type');
 
-		}
-
-		/**
-		 * Run the loader to execute all of the hooks with WordPress.
-		 *
-		 * @since    1.0.0
-		 */
-		public function run() {
-			$this->loader->run();
-		}
-
-		/**
-		 * The name of the plugin used to uniquely identify it within the context of
-		 * WordPress and to define internationalization functionality.
-		 *
-		 * @return    string    The name of the plugin.
-		 * @since     1.0.0
-		 */
-		public function get_plugin_name() {
-			return $this->plugin_name;
-		}
-
-		/**
-		 * The reference to the class that orchestrates the hooks with the plugin.
-		 *
-		 * @return    Chi_Mail_Machine_Loader    Orchestrates the hooks of the plugin.
-		 * @since     1.0.0
-		 */
-		public function get_loader() {
-			return $this->loader;
-		}
-
-		/**
-		 * Retrieve the version number of the plugin.
-		 *
-		 * @return    string    The version number of the plugin.
-		 * @since     1.0.0
-		 */
-		public function get_version() {
-			return $this->version;
 		}
 
 		/**
@@ -277,8 +259,13 @@
 
 			$this->loader->add_action( 'init', $plugin_post_type_email_ad, 'init' );
 
+			$this->loader->add_action( 'admin_init', $plugin_post_type, 'external_worker_remainder' );
+
 
 			$this->loader->add_action( 'wp_ajax_example_ajax_request', $email_sender, 'example_ajax_request' );
+
+			$this->loader->add_action( 'wp_ajax_email_admin_done', $email_sender,
+				'email_admin_done' );
 
 			$this->loader->add_action( 'wp_ajax_chi_ajax_all_useres', $email_sender, 'chi_ajax_all_useres' );
 
@@ -342,6 +329,25 @@
 			add_action( 'admin_init', array( $plugin_users, 'change_role_name' ) );
 			add_action( 'init', array( $plugin_users, 'redirect' ) );
 			add_action( 'admin_menu', array( $plugin_users, 'remove_specifc_postype_for_external_worker' ), 999 );
+		}
+
+		/**
+		 * Run the loader to execute all of the hooks with WordPress.
+		 *
+		 * @since    1.0.0
+		 */
+		public function run() {
+			$this->loader->run();
+		}
+
+		/**
+		 * The reference to the class that orchestrates the hooks with the plugin.
+		 *
+		 * @return    Chi_Mail_Machine_Loader    Orchestrates the hooks of the plugin.
+		 * @since     1.0.0
+		 */
+		public function get_loader() {
+			return $this->loader;
 		}
 
 	}

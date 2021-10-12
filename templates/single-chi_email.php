@@ -285,5 +285,5 @@
 </div>
 </body>
 </html>
-<a href="<?php echo CHI_MAIL_BASE_URL ?>templates/email-download.php" >Download</a>
+<a href="<?php echo CHI_MAIL_BASE_URL ?>templates/email-download.php?id=<?php echo get_the_ID(); ?>">Download</a>
 

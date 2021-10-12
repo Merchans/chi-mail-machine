@@ -161,10 +161,10 @@
 				<?php if ( get_post_meta( $post_id, 'all_respondents', true ) && get_post_meta( $post_id,
 								'all_open_email', true ) && get_post_meta( $post_id, 'all_web_opens', true ) ) : ?>
 					<span class="statistic-info">R: <?php echo get_post_meta( $post_id, 'all_respondents',
-								true ) ?> E: <?php echo get_post_meta( $post_id, 'all_open_email',
+								true ) ?> O: <?php echo get_post_meta( $post_id, 'all_open_email',
 								true ) ?> W: <?php echo get_post_meta( $post_id, 'all_web_opens', true ) ?>&nbsp;</span>
 				<?php else : ?>
-					<span class="statistic-info">R: X E: X W: X&nbsp;</span>
+					<span class="statistic-info">R: X O: X W: X&nbsp;</span>
 				<?php endif ?>
 
 			</div>
@@ -387,4 +387,3 @@
 				),
 		);
 	}
-
