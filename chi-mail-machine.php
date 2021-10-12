@@ -129,45 +129,45 @@
 	function chi_add_post_chi_email_columns_data( $column, $post_id ) {
 		if ( $column == "author_completed" ) {
 			?>
-			<input type="checkbox"
-				   disabled <?php echo get_post_meta( $post_id, 'chi_email_author_state',
-					true ) == 'on' ? 'checked' : '' ?> >
+            <input type="checkbox"
+                   disabled <?php echo get_post_meta( $post_id, 'chi_email_author_state',
+				true ) == 'on' ? 'checked' : '' ?> >
 			<?php
 		}
 		if ( $column == "editor_completed" ) {
 			?>
-			<input type="checkbox"
-				   disabled <?php echo get_post_meta( $post_id, 'chi_email_editor_state',
-					true ) == 'on' ? 'checked' : '' ?> >
+            <input type="checkbox"
+                   disabled <?php echo get_post_meta( $post_id, 'chi_email_editor_state',
+				true ) == 'on' ? 'checked' : '' ?> >
 			<?php
 		}
 		if ( $column == "admin_completed" ) {
 			?>
-			<input type="checkbox"
-				   disabled <?php echo get_post_meta( $post_id, 'chi_email_admin_state',
-					true ) == 'on' ? 'checked' : '' ?> >
+            <input type="checkbox"
+                   disabled <?php echo get_post_meta( $post_id, 'chi_email_admin_state',
+				true ) == 'on' ? 'checked' : '' ?> >
 			<?php
 		}
 		if ( $column == "externalcompany_statistics" ) {
 			?>
-			<input class="statistic-url" type="url" id="text-area-for-statistics-<?php echo $post_id; ?>"
-				   value="<?php echo $statistic_url = get_post_meta( $post_id,
-						   'statistic_url' ) ? get_post_meta( $post_id, 'statistic_url', true ) : '' ?>">
+            <input class="statistic-url" type="url" id="text-area-for-statistics-<?php echo $post_id; ?>"
+                   value="<?php echo $statistic_url = get_post_meta( $post_id,
+				       'statistic_url' ) ? get_post_meta( $post_id, 'statistic_url', true ) : '' ?>">
 
-			<input id="add-statistics-<?php echo $post_id; ?>" data-postid="<?php echo $post_id; ?>"
-				   class="statistic-btn button-primary" type="submit" value="Add">
-			<span class="spinner"></span>
-			<div class="statistic-wrap">
+            <input id="add-statistics-<?php echo $post_id; ?>" data-postid="<?php echo $post_id; ?>"
+                   class="statistic-btn button-primary" type="submit" value="Add">
+            <span class="spinner"></span>
+            <div class="statistic-wrap">
 				<?php if ( get_post_meta( $post_id, 'all_respondents', true ) && get_post_meta( $post_id,
-								'all_open_email', true ) && get_post_meta( $post_id, 'all_web_opens', true ) ) : ?>
-					<span class="statistic-info">R: <?php echo get_post_meta( $post_id, 'all_respondents',
-								true ) ?> O: <?php echo get_post_meta( $post_id, 'all_open_email',
-								true ) ?> W: <?php echo get_post_meta( $post_id, 'all_web_opens', true ) ?>&nbsp;</span>
+						'all_open_email', true ) && get_post_meta( $post_id, 'all_web_opens', true ) ) : ?>
+                    <span class="statistic-info">R: <?php echo get_post_meta( $post_id, 'all_respondents',
+							true ) ?> O: <?php echo get_post_meta( $post_id, 'all_open_email',
+							true ) ?> W: <?php echo get_post_meta( $post_id, 'all_web_opens', true ) ?>&nbsp;</span>
 				<?php else : ?>
-					<span class="statistic-info">R: X O: X W: X&nbsp;</span>
+                    <span class="statistic-info">R: X O: X W: X&nbsp;</span>
 				<?php endif ?>
 
-			</div>
+            </div>
 			<?php
 		}
 	}
@@ -209,17 +209,17 @@
 	}
 
 	function ajax_script() { ?>
-		<script>
-			jQuery(document).ready(function ($) {
-				$('.addSection').on('click', function () {
-					var selectedSection = $('#sections option:selected').text();
-					console.log(selectedSection);
-					$.post(ajaxurl, {action: 'addStructureBox', section: selectedSection}, function (data) {
-						$('#sections_meta_box').parent().append(data);
-					});
-				});
-			});
-		</script>
+        <script>
+            jQuery(document).ready(function ($) {
+                $('.addSection').on('click', function () {
+                    var selectedSection = $('#sections option:selected').text();
+                    console.log(selectedSection);
+                    $.post(ajaxurl, {action: 'addStructureBox', section: selectedSection}, function (data) {
+                        $('#sections_meta_box').parent().append(data);
+                    });
+                });
+            });
+        </script>
 		<?php
 	}
 
@@ -227,7 +227,7 @@
 
 <?php
 
-	add_action( 'wp_ajax_add_myfunc', 'prefix_ajax_add_myfunc' );
+//	add_action( 'wp_ajax_add_myfunc', 'prefix_ajax_add_myfunc' );
 	//	add_action( 'wp_ajax_nopriv_add_myfunc', 'prefix_ajax_add_myfunc' );
 
 	function prefix_ajax_add_myfunc() {
@@ -273,104 +273,19 @@
 		}
 	} );
 
+	add_filter( 'allowed_block_types', 'chi_allowed_block_types' );
 
-	function my_post_type_xhr() {
-		# Only for one post type.
-		if ( get_post_type() === 'chi_email' ) {
-
-			?>
-			<script>
-				// Avoid collisions with other libraries
-				(function ($) {
-					// Make sure the document is ready
-					$(document).ready(function () {
-
-						var btn = $('#publishComment');
-						btn.on('click', function (e) {
-
-							console.log('clicked');
-							$('.spinner').addClass('is-active');
-							e.preventDefault()
-
-							// This is the post.php url we localized (via php) above-->
-							var url = <?//= admin_url( 'post.php' ) ?>'
-							// Serialize form data
-							var data = $('form#post').serializeArray();
-
-							// Tell PHP what we're doing
-							// NOTE: "name" and "value" are the array keys. This is important. I use int(1) for the value to make sure we don't get a string server-side.
-							data.push({name: 'save_post_ajax', value: 1})
-
-							// Replaces wp.autosave.initialCompareString
-							var ajax_updated = false
-
-							/**
-							 * Supercede the WP beforeunload function to remove
-							 * the confirm dialog when leaving the page (if we saved via ajax)
-							 *
-							 * The following line of code SHOULD work in $.post.done(), but
-							 *     for some reason, wp.autosave.initialCompareString isn't changed
-							 *     when called from wp-includes/js/autosave.js
-							 * wp.autosave.initialCompareString = wp.autosave.getCompareString();
-							 */
-							$(window).unbind('beforeunload.edit-post')
-							$(window).on('beforeunload.edit-post', function () {
-								var editor = typeof tinymce !== 'undefined' && tinymce.get('content')
-
-								// Use our "ajax_updated" var instead of wp.autosave.initialCompareString
-								if ((editor && !editor.isHidden() && editor.isDirty()) ||
-										(wp.autosave && wp.autosave.getCompareString() !== ajax_updated)) {
-									return postL10n.saveAlert
-								}
-							})
-
-
-							// Post it
-							$.post(url, data, function (response) {
-								// Validate response
-								if (response.success) {
-									// Mark TinyMCE as saved
-									if (typeof tinyMCE !== 'undefined') {
-										for (id in tinyMCE.editors) {
-											if (tinyMCE.get(id))
-												tinyMCE.get(id).setDirty(false)
-										}
-									}
-									// Update the saved content for the beforeunload check
-									ajax_updated = wp.autosave.getCompareString()
-
-									console.log('Saved post successfully')
-								} else {
-									console.log('ERROR: Server returned false. ', response)
-								}
-							}).fail(function (response) {
-								console.log('ERROR: Could not contact server. ', response)
-							}).done(function () {
-								if (wp.autosave) {
-									wp.autosave.enableButtons();
-								}
-
-								$('.spinner').removeClass('is-active');
-							})
-
-							return false
-						})
-					})
-				})(jQuery)
-			</script>
-			<?php
+	function chi_allowed_block_types( $allowed_blocks ) {
+		if ( 'chi_email' != get_post_type() ) {
+			return;
 		}
-	}
-
-//	add_filter( 'allowed_block_types', 'misha_allowed_block_types' );
-
-	function misha_allowed_block_types( $allowed_blocks ) {
 
 		return array(
-				'core/image',
-				'core/paragraph',
-				'core/heading',
-				'core/list'
+			'core/image',
+			'core/paragraph',
+			'core/heading',
+			'core/list',
+			'chi-mail-machine/blocks'
 		);
 
 	}
@@ -378,12 +293,12 @@
 	remove_role( 'guest_author' );
 	function wporg_simple_role() {
 		add_role(
-				'chi_external_worker',
-				'IQUE External Worker',
-				array(
-						'read'         => true,
-						'edit_posts'   => false,
-						'upload_files' => false,
-				),
+			'chi_external_worker',
+			'IQUE External Worker',
+			array(
+				'read'         => true,
+				'edit_posts'   => false,
+				'upload_files' => false,
+			),
 		);
 	}
