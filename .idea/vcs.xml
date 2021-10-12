@@ -2,5 +2,8 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/dependencies/cmb2-field-ajax-search" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/dependencies/cmb2-field-post-search-ajax" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/dependencies/cmb2-term-select" vcs="Git" />
   </component>
 </project>
