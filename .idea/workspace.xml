@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="e90737f4-dedb-400e-8fa8-754272e7e2b7" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/cmb2-field-post-search-ajax" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/cmb2-field-post-search-ajax" afterDir="false" />
-    </list>
+    <list default="true" id="e90737f4-dedb-400e-8fa8-754272e7e2b7" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -137,6 +134,7 @@
     </include_path>
   </component>
   <component name="ProjectId" id="1sNyS28196DzUwa26zq4oOPzrjk" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -220,7 +218,7 @@
       <workItem from="1630319498692" duration="2245000" />
       <workItem from="1630355097376" duration="8000" />
       <workItem from="1630418160497" duration="65000" />
-      <workItem from="1633427721318" duration="53229000" />
+      <workItem from="1633427721318" duration="53557000" />
     </task>
     <servers />
   </component>
